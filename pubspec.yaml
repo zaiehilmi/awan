@@ -1,0 +1,28 @@
+name: awan
+description: "Projek untuk mendapatkan segala info berkaitan pengangkutan awam di kawasan Lembah Klang"
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ^3.5.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+  prasarana_rapid:
+    path: ../prasarana_rapid
+
+  forui: ^0.4.0
+  gap: ^3.0.1
+  path_provider: ^2.1.4
+  june: ^1.0.0+1
+  flutter_hooks: ^0.20.5
+  intl:
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
