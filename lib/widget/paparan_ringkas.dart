@@ -12,30 +12,32 @@ import 'package:prasarana_rapid/prasarana_rapid.dart';
 class PaparanRingkas extends HookWidget {
   final String kodLaluan;
   final String? namaLaluan;
-  final String? titikA;
-  final String? titikB;
   final List<WaktuBerhenti> listWaktuBerhenti;
+  final void Function()? onTap;
 
-  PaparanRingkas({
+  const PaparanRingkas({
     super.key,
     required this.kodLaluan,
     this.namaLaluan,
-    this.titikA,
-    this.titikB,
     required this.listWaktuBerhenti,
+    this.onTap,
   });
 
-  (int, Duration?) _getIndeksBasSeterusnya() {
+  ({int indeks, Duration? durasiUntukBasSeterusnya}) _getIndeksBasSeterusnya() {
     DateTime sekarang = DateTime.now();
 
     for (int i = 0; i < listWaktuBerhenti.length; i++) {
       if (listWaktuBerhenti[i].ketibaan != null &&
           listWaktuBerhenti[i].ketibaan!.isAfter(sekarang)) {
-        return (i, listWaktuBerhenti[i].ketibaan?.difference(sekarang));
+        return (
+          indeks: i,
+          durasiUntukBasSeterusnya:
+              listWaktuBerhenti[i].ketibaan?.difference(sekarang),
+        );
       }
     }
 
-    return (-1, null);
+    return (indeks: -1, durasiUntukBasSeterusnya: null);
   }
 
   void _updateValues(
@@ -45,20 +47,30 @@ class PaparanRingkas extends HookWidget {
     ValueNotifier<String?> akanTiba1,
     ValueNotifier<String?> akanTiba2,
   ) {
-    final (indeks, durasi) = _getIndeksBasSeterusnya();
+    final _basSeterusnya = _getIndeksBasSeterusnya();
 
-    indeksTerkini.value = indeks;
-    perbezaanMasa.value = (durasi ?? const Duration()).mesra;
+    indeksTerkini.value = _basSeterusnya.indeks;
 
-    tibaSeterusnya.value = _formatKetibaan(indeks);
-    akanTiba1.value = _formatKetibaan(indeks + 1);
-    akanTiba2.value = _formatKetibaan(indeks + 2);
+    if (_basSeterusnya.indeks == -1) {
+      perbezaanMasa.value = '';
+    } else {
+      perbezaanMasa.value =
+          (_basSeterusnya.durasiUntukBasSeterusnya ?? const Duration()).mesra;
+    }
+
+    tibaSeterusnya.value = _formatKetibaan(_basSeterusnya.indeks);
+    akanTiba1.value = _formatKetibaan(_basSeterusnya.indeks + 1);
+    akanTiba2.value = _formatKetibaan(_basSeterusnya.indeks + 2);
   }
 
-  String? _formatKetibaan(int index) {
-    return (index < listWaktuBerhenti.length)
-        ? listWaktuBerhenti[index].ketibaan?.format24Jam
-        : null;
+  String? _formatKetibaan(int indeks) {
+    if (indeks == -1) {
+      return null;
+    } else if (indeks < listWaktuBerhenti.length) {
+      return listWaktuBerhenti[indeks].ketibaan?.format24Jam;
+    } else {
+      return null;
+    }
   }
 
   @override
@@ -82,9 +94,7 @@ class PaparanRingkas extends HookWidget {
     }, [listWaktuBerhenti]);
 
     return GestureDetector(
-      onTap: () {
-        print('object');
-      },
+      onTap: () => onTap,
       child: FCard(
         title: Row(
           children: [
@@ -101,13 +111,16 @@ class PaparanRingkas extends HookWidget {
           ],
         ),
         subtitle: Text(
-          'Jangkaan ketibaan: ${perbezaanMasa.value}',
+          perbezaanMasa.value,
           style: const TextStyle(fontSize: 11.5),
         ),
-        child: _jangkaanKetibaan(context,
-            selepasIni: tibaSeterusnya.value,
-            akanTiba1: akanTiba1.value,
-            akanTiba2: akanTiba2.value),
+        child: _jangkaanKetibaan(
+          context,
+          selepasIni: tibaSeterusnya.value,
+          akanTiba1: akanTiba1.value,
+          akanTiba2: akanTiba2.value,
+          indeksTerkini: indeksTerkini.value,
+        ),
       ),
     );
   }
@@ -118,27 +131,37 @@ Widget _jangkaanKetibaan(
   required String? selepasIni,
   required String? akanTiba1,
   required String? akanTiba2,
+  required int indeksTerkini,
 }) {
+  String labelJangkaanSeterusnya;
   final gayaTulisanJamAkanTiba = gayaTulisan(context).sm.copyWith(
         color: skemaWarna(context).secondaryForeground,
         fontWeight: FontWeight.w300,
       );
+
+  if (indeksTerkini == -1) {
+    labelJangkaanSeterusnya = 'esok';
+  } else {
+    labelJangkaanSeterusnya = 'Jangkaan seterusnya';
+  }
 
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
       Text(
         selepasIni ?? 'Tiada bas selepas ini',
-        style: gayaTulisan(context).lg.copyWith(
-              height: 1.3,
-              fontWeight: FontWeight.bold,
-            ),
+        style: (selepasIni != null)
+            ? gayaTulisan(context).lg.copyWith(
+                  height: 1.3,
+                  fontWeight: FontWeight.bold,
+                )
+            : gayaTulisan(context).xs.copyWith(height: 1.3),
       ),
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Jangkaan seterusnya',
+            labelJangkaanSeterusnya,
             style: gayaTulisan(context).sm.copyWith(
                   color: skemaWarna(context).mutedForeground,
                   fontSize: 9,
