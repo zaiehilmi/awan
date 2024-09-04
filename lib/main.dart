@@ -54,7 +54,7 @@ class Awan extends HookWidget {
     return MaterialApp(
       themeMode: ThemeMode.system,
       builder: (context, child) => FTheme(
-        data: FThemes.rose.light,
+        data: FThemes.rose.dark,
         child: child!,
       ),
       home: FScaffold(
