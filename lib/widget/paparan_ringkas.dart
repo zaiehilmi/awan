@@ -7,32 +7,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:forui/forui.dart';
 import 'package:gap/gap.dart';
-import 'package:prasarana_rapid/prasarana_rapid.dart';
 
 class PaparanRingkas extends HookWidget {
   final String kodLaluan;
   final String? namaLaluan;
-  final List<WaktuBerhenti> listWaktuBerhenti;
+  final List<DateTime> listJadual;
   final void Function()? onTap;
 
   const PaparanRingkas({
     super.key,
     required this.kodLaluan,
+    required this.listJadual,
     this.namaLaluan,
-    required this.listWaktuBerhenti,
     this.onTap,
   });
 
   ({int indeks, Duration? durasiUntukBasSeterusnya}) _getIndeksBasSeterusnya() {
     DateTime sekarang = DateTime.now();
 
-    for (int i = 0; i < listWaktuBerhenti.length; i++) {
-      if (listWaktuBerhenti[i].ketibaan != null &&
-          listWaktuBerhenti[i].ketibaan!.isAfter(sekarang)) {
+    for (int i = 0; i < listJadual.length; i++) {
+      if (listJadual[i].isAfter(sekarang)) {
         return (
           indeks: i,
-          durasiUntukBasSeterusnya:
-              listWaktuBerhenti[i].ketibaan?.difference(sekarang),
+          durasiUntukBasSeterusnya: listJadual[i].difference(sekarang),
         );
       }
     }
@@ -66,8 +63,8 @@ class PaparanRingkas extends HookWidget {
   String? _formatKetibaan(int indeks) {
     if (indeks == -1) {
       return null;
-    } else if (indeks < listWaktuBerhenti.length) {
-      return listWaktuBerhenti[indeks].ketibaan?.format24Jam;
+    } else if (indeks < listJadual.length) {
+      return listJadual[indeks].format24Jam;
     } else {
       return null;
     }
@@ -91,7 +88,7 @@ class PaparanRingkas extends HookWidget {
       });
 
       return () => timer.cancel();
-    }, [listWaktuBerhenti]);
+    }, [listJadual]);
 
     return GestureDetector(
       onTap: () => onTap,
@@ -102,7 +99,7 @@ class PaparanRingkas extends HookWidget {
             const Gap(10),
             Expanded(
               child: Text(
-                listWaktuBerhenti[0].petunjuk ?? 'data',
+                namaLaluan ?? 'data',
                 style: const TextStyle(fontSize: 13),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,

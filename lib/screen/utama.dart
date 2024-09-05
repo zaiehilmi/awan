@@ -1,4 +1,4 @@
-import 'package:awan/service/state/bas.dart';
+import 'package:awan/service/state/vm_bas.dart';
 import 'package:awan/widget/paparan_ringkas.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -18,9 +18,10 @@ class SkrinUtama extends HookWidget {
 
     useEffect(() {
       Future<void> initBasState() async {
-        await basState.masaKetibaanBasT542();
-        await basState.masaKetibaanBasT818();
-        await basState.masaKetibaanBasT852();
+        await basState.masaKetibaan(bas: 'T542');
+        await basState.masaKetibaan(bas: 'T818');
+        await basState.masaKetibaan(bas: 'T852');
+
         print('Bas Initialized');
         basInitialized.value = true;
       }
@@ -44,19 +45,31 @@ class SkrinUtama extends HookWidget {
             PaparanRingkas(
               kodLaluan: 'T542',
               namaLaluan: 'Rumah',
-              listWaktuBerhenti: vm.senaraiLaluan,
+              listJadual: vm.senaraiLaluan
+                  .where((e) => e.kodLaluan == 'T542')
+                  .first
+                  .jadual,
+              onTap: () {
+                print('lala');
+              },
             ),
             const Gap(10),
             PaparanRingkas(
               kodLaluan: 'T818',
               namaLaluan: 'Gi Office 😭',
-              listWaktuBerhenti: vm.T818,
+              listJadual: vm.senaraiLaluan
+                  .where((e) => e.kodLaluan == 'T818')
+                  .first
+                  .jadual,
             ),
             const Gap(10),
             PaparanRingkas(
               kodLaluan: 'T852',
               namaLaluan: 'Gi Office 😭',
-              listWaktuBerhenti: vm.T852,
+              listJadual: vm.senaraiLaluan
+                  .where((e) => e.kodLaluan == 'T852')
+                  .first
+                  .jadual,
             ),
           ],
         ),
