@@ -91,7 +91,7 @@ class PaparanRingkas extends HookWidget {
     }, [listJadual]);
 
     return GestureDetector(
-      onTap: () => onTap,
+      onTap: onTap,
       child: FCard(
         title: Row(
           children: [
