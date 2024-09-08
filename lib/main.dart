@@ -7,6 +7,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:forui/forui.dart';
 import 'package:path_provider/path_provider.dart';
 
+import 'database/pangkalan_data.dart';
 import 'model/constant/jenis_perkhidmatan.dart';
 
 void main() async {
@@ -14,6 +15,19 @@ void main() async {
 
   final tempDir = await getTemporaryDirectory();
   Tetapan.filePath = tempDir.path;
+
+  final db = AppDatabase();
+
+  // await db.into(db.agensiEntiti).insert(
+  //       AgensiEntitiCompanion.insert(
+  //           idAgensi: 'Zaie yeay',
+  //           namaAgensi: 'Zaie ada MRT',
+  //           url: 'null',
+  //           zonWaktu: 'Asia/Kuala Lumpur'),
+  //     );
+
+  final allItems = await db.select(db.agensiEntiti).get();
+  print('object ${allItems.length}');
 
   await apiGtfsStatik(JenisPerkhidmatan.basPerantaraMrt);
   // await fetchPrasaranaApi(JenisPerkhidmatan.basKL);

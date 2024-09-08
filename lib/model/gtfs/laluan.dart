@@ -19,7 +19,7 @@ class Laluan {
   String? idAgensi;
   String? namaPendek;
   String namaPenuh;
-  JenisKenderaan jenisLaluan;
+  JenisKenderaan jenisKenderaan;
   String? warnaLaluan;
   String? warnaTeksLaluan;
 
@@ -28,7 +28,7 @@ class Laluan {
     this.idAgensi,
     this.namaPendek,
     this.namaPenuh,
-    this.jenisLaluan,
+    this.jenisKenderaan,
     this.warnaLaluan,
     this.warnaTeksLaluan,
   );
@@ -57,7 +57,7 @@ class Laluan {
 
   @override
   String toString() {
-    return 'Laluan{id: $idLaluan, idAgensi: $idAgensi, namaPendek: $namaPendek, namaPenuh: $namaPenuh, jenisLaluan: $jenisLaluan, warnaLaluan: $warnaLaluan, warnaTeksLaluan: $warnaTeksLaluan}';
+    return 'Laluan{id: $idLaluan, idAgensi: $idAgensi, namaPendek: $namaPendek, namaPenuh: $namaPenuh, jenisLaluan: $jenisKenderaan, warnaLaluan: $warnaLaluan, warnaTeksLaluan: $warnaTeksLaluan}';
   }
 }
 
