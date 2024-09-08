@@ -9,8 +9,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  prasarana_rapid:
-    path: ../prasarana_rapid
 
   forui: ^0.4.0
   gap: ^3.0.1
@@ -18,11 +16,21 @@ dependencies:
   june: ^1.0.0+1
   flutter_hooks: ^0.20.5
   intl:
+  drift: ^2.20.0
+  drift_flutter: ^0.1.0
+  dio: ^5.4.0
+  archive: ^3.4.10
+  csv: 6.0.0
+  crypto: ^3.0.3
+  collection: ^1.18.0
+  roggle: ^0.4.2+1  # logging
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^4.0.0
+  drift_dev: ^2.20.0
+  build_runner: ^2.4.12
 
 flutter:
   uses-material-design: true

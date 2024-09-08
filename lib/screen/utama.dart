@@ -5,7 +5,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:forui/forui.dart';
 import 'package:gap/gap.dart';
 import 'package:june/june.dart';
-import 'package:prasarana_rapid/prasarana_rapid.dart';
+
+import '../model/gtfs/waktu_berhenti.dart';
 
 class SkrinUtama extends HookWidget {
   const SkrinUtama({super.key});
@@ -49,7 +50,7 @@ class SkrinUtama extends HookWidget {
                   .where((e) => e.kodLaluan == 'T542')
                   .first
                   .jadual,
-              onTap: () {
+              onTap: () async {
                 print('lala');
               },
             ),
