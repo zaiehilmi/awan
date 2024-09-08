@@ -30,6 +30,8 @@ class SkrinUtama extends HookWidget {
       if (!basInitialized.value) {
         initBasState();
       }
+      
+      return null;
     }, [basInitialized.value]); // depend on basInitialized value to run once
 
     if (!basInitialized.value) {

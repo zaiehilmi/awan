@@ -44,20 +44,20 @@ class PaparanRingkas extends HookWidget {
     ValueNotifier<String?> akanTiba1,
     ValueNotifier<String?> akanTiba2,
   ) {
-    final _basSeterusnya = _getIndeksBasSeterusnya();
+    final basSeterusnya = _getIndeksBasSeterusnya();
 
-    indeksTerkini.value = _basSeterusnya.indeks;
+    indeksTerkini.value = basSeterusnya.indeks;
 
-    if (_basSeterusnya.indeks == -1) {
+    if (basSeterusnya.indeks == -1) {
       perbezaanMasa.value = '';
     } else {
       perbezaanMasa.value =
-          (_basSeterusnya.durasiUntukBasSeterusnya ?? const Duration()).mesra;
+          (basSeterusnya.durasiUntukBasSeterusnya ?? const Duration()).mesra;
     }
 
-    tibaSeterusnya.value = _formatKetibaan(_basSeterusnya.indeks);
-    akanTiba1.value = _formatKetibaan(_basSeterusnya.indeks + 1);
-    akanTiba2.value = _formatKetibaan(_basSeterusnya.indeks + 2);
+    tibaSeterusnya.value = _formatKetibaan(basSeterusnya.indeks);
+    akanTiba1.value = _formatKetibaan(basSeterusnya.indeks + 1);
+    akanTiba2.value = _formatKetibaan(basSeterusnya.indeks + 2);
   }
 
   String? _formatKetibaan(int indeks) {

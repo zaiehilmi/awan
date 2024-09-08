@@ -3,6 +3,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:forui/forui.dart';
 
 class SkrinTetapan extends HookWidget {
+  const SkrinTetapan({super.key});
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build

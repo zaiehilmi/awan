@@ -54,8 +54,8 @@ class Awan extends HookWidget {
   ];
 
   final contents = [
-    SkrinUtama(),
-    SkrinKiraTambang(),
+    const SkrinUtama(),
+    const SkrinKiraTambang(),
     SkrinGelintar(),
     SkrinTetapan(),
   ];
@@ -63,10 +63,11 @@ class Awan extends HookWidget {
   @override
   Widget build(BuildContext context) {
     useAnimationController(duration: const Duration(seconds: 2));
-    final _bottomNavIndex = useState(0);
+    final bottomNavIndex = useState(0);
 
     useEffect(() {
       rog.i('init dalam Awan');
+      return null;
     }, []);
 
     return MaterialApp(
@@ -76,12 +77,12 @@ class Awan extends HookWidget {
         child: child!,
       ),
       home: FScaffold(
-        header: headers[_bottomNavIndex.value],
-        content: contents[_bottomNavIndex.value],
+        header: headers[bottomNavIndex.value],
+        content: contents[bottomNavIndex.value],
         footer: FBottomNavigationBar(
-          index: _bottomNavIndex.value,
+          index: bottomNavIndex.value,
           onChange: (index) {
-            _bottomNavIndex.value = index;
+            bottomNavIndex.value = index;
           },
           items: [
             FBottomNavigationBarItem(
