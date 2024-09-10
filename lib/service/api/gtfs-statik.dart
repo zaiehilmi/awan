@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:awan/util/roggle.dart';
 import 'package:dio/dio.dart';
+import 'package:orange/orange.dart';
 
 import '../../model/constant/jenis_perkhidmatan.dart';
-import '../../util/banding_hash.dart';
 import '../tetapan.dart';
 
 final _options = BaseOptions(
@@ -30,22 +30,25 @@ Future<void> apiGtfsStatik(
       _options.headers = {'Authorization': 'Bearer ${Tetapan.token}'};
     }
 
-    // dapatkan head response untuk mendapatkan etag yang digunakan untuk
-    // menentukan sama ada perlu download fail zip baru atau tidak.
     final response = await dio.head(laluanApi);
-    final etag = response.headers.value('etag').toString();
-
+    final etagBaru = response.headers.value('etag').toString();
+    final kemaskiniTersedia = Orange.getString('etag') != etagBaru;
     final failBelumWujud = !File(kedudukanFail).existsSync();
     rog.d(response.requestOptions.uri);
 
     if (failBelumWujud) {
-      rog.i('Memuat turun data... dari ${response.requestOptions.path}');
+      // Fail belum wujud, terus muat turun
+      rog.i('Memuat turun fail dari ${response.requestOptions.path}');
+      Orange.setString('etag', etagBaru);
       await dio.download(laluanApi, kedudukanFail);
+    } else if (semakPerubahan && kemaskiniTersedia) {
+      rog.i('Terdapat perubahan pada fail, memuat turun versi baru...');
+      Orange.setString('etag', etagBaru);
+      await dio.download(laluanApi, kedudukanFail);
+    } else if (kemaskiniTersedia == false) {
+      rog.i('Tiada perubahan, fail tidak perlu dimuat turun');
     } else {
-      if (semakPerubahan && bandingHash(kedudukanFail, etag)) {
-        rog.i('Terdapat perubahan pada pelayan. Memuat turun data baru...');
-        await dio.download(laluanApi, kedudukanFail);
-      }
+      rog.i('Fail cache telah wujud, tiada muat turun diperlukan.');
     }
 
     rog.i('Selesai memuat API');

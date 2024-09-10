@@ -24,6 +24,7 @@ dependencies:
   crypto: ^3.0.3
   collection: ^1.18.0
   roggle: ^0.4.2+1  # logging
+  orange: ^1.2.8
 
 dev_dependencies:
   flutter_test:

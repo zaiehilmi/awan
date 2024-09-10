@@ -1,13 +1,14 @@
 import 'package:awan/screen/index.dart';
 import 'package:awan/service/api/gtfs-statik.dart';
+import 'package:awan/service/state/vm_lokal.dart';
 import 'package:awan/service/tetapan.dart';
 import 'package:awan/util/roggle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:forui/forui.dart';
+import 'package:orange/orange.dart';
 import 'package:path_provider/path_provider.dart';
 
-import 'database/pangkalan_data.dart';
 import 'model/constant/jenis_perkhidmatan.dart';
 
 void main() async {
@@ -16,17 +17,10 @@ void main() async {
   final tempDir = await getTemporaryDirectory();
   Tetapan.filePath = tempDir.path;
 
-  final db = AppDatabase();
+  // memulakan storan lokal
+  await Orange.init();
 
-  // await db.into(db.agensiEntiti).insert(
-  //       AgensiEntitiCompanion.insert(
-  //           idAgensi: 'Zaie yeay',
-  //           namaAgensi: 'Zaie ada MRT',
-  //           url: 'null',
-  //           zonWaktu: 'Asia/Kuala Lumpur'),
-  //     );
-
-  final allItems = await db.select(db.agensiEntiti).get();
+  final allItems = await lokalState.db.select(lokalState.db.agensiEntiti).get();
   print('object ${allItems.length}');
 
   await apiGtfsStatik(JenisPerkhidmatan.basPerantaraMrt);
