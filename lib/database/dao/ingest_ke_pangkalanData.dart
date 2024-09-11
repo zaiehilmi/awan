@@ -88,7 +88,22 @@ Future<void> addSemuaLaluanDao(List<Laluan> entri) async {
   rog.i('Saiz Laluan\t${semua.length}');
 }
 
-// TODO: perjalanan entiti
+Future<void> addSemuaPerjalananDao(List<Perjalanan> entri) async {
+  await _db.batch((batch) => batch.insertAll(
+        _db.perjalananEntiti,
+        entri.map((e) => PerjalananEntitiCompanion.insert(
+              idPerjalanan: e.idPerjalanan,
+              idLaluan: e.idLaluan,
+              idPerkhidmatan: e.idPerkhidmatan,
+              idArah: Value(e.idArah),
+              idBentuk: Value(e.idBentuk),
+              petunjukPerjalanan: Value(e.petunjukPerjalanan),
+            )),
+      ));
+
+  final semua = await _db.select(_db.perjalananEntiti).get();
+  rog.i('Saiz Perjalanan\t${semua.length}');
+}
 
 Future<void> addSemuaWaktuBerhentiDao(List<WaktuBerhenti> entri) async {
   await _db.batch((batch) => batch.insertAll(

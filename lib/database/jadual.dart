@@ -64,7 +64,7 @@ class PerjalananEntiti extends Table {
   TextColumn get idBentuk =>
       text().nullable().references(BentukEntiti, #idBentuk)();
   TextColumn get petunjukPerjalanan => text().nullable()();
-  IntColumn get arah => intEnum<ArahPerjalanan>().nullable()();
+  IntColumn get idArah => intEnum<ArahPerjalanan>().nullable()();
 
   @override
   Set<Column> get primaryKey => {idPerjalanan, idPerkhidmatan};

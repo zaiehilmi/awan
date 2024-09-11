@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:awan/database/dao/agensi.dart';
+import 'package:awan/database/dao/ingest_ke_pangkalanData.dart';
 import 'package:awan/model/constant/fail_txt.dart';
 import 'package:awan/util/baca_csv.dart';
 import 'package:awan/util/roggle.dart';
@@ -61,7 +61,7 @@ Future<void> apiGtfsStatik(
   } on DioException {
     rog.e('Masalah di Dio');
   } catch (e) {
-    rog.f('Ralat kritikal', error: e);
+    rog.t('Ralat kritikal', error: e);
   } finally {
     dio.close();
   }
@@ -71,11 +71,14 @@ Future<void> _muatTurunBaharu({required String etag}) async {
   Orange.setString('etag', etag);
 
   await _prosesData<Agensi>(FailTxt.agensi, addSemuaAgensiDao);
-  await _prosesData<Laluan>(FailTxt.laluan, addSemuaLaluanDao);
   await _prosesData<Bentuk>(FailTxt.bentuk, addSemuaBentukDao);
   await _prosesData<Hentian>(FailTxt.hentian, addSemuaHentianDao);
+  await _prosesData<Laluan>(FailTxt.laluan, addSemuaLaluanDao);
+  await _prosesData<Perjalanan>(FailTxt.perjalanan, addSemuaPerjalananDao);
   await _prosesData<WaktuBerhenti>(
-      FailTxt.waktuBerhenti, addSemuaWaktuBerhentiDao);
+    FailTxt.waktuBerhenti,
+    addSemuaWaktuBerhentiDao,
+  );
 }
 
 Future<void> _prosesData<T>(

@@ -2,6 +2,7 @@ import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 
 import '../model/gtfs/index.dart';
+import 'dao/laluan_bas.dart';
 import 'jadual.dart';
 
 part 'pangkalan_data.g.dart';
@@ -14,6 +15,8 @@ part 'pangkalan_data.g.dart';
   LaluanEntiti,
   PerjalananEntiti,
   WaktuBerhentiEntiti,
+], daos: [
+  LaluanBasDao
 ])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
