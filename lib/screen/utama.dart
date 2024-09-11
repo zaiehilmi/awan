@@ -6,7 +6,9 @@ import 'package:forui/forui.dart';
 import 'package:gap/gap.dart';
 import 'package:june/june.dart';
 
+import '../database/dao/laluan_bas.dart';
 import '../model/gtfs/waktu_berhenti.dart';
+import '../service/state/vm_lokal.dart';
 
 class SkrinUtama extends HookWidget {
   const SkrinUtama({super.key});
@@ -30,7 +32,7 @@ class SkrinUtama extends HookWidget {
       if (!basInitialized.value) {
         initBasState();
       }
-      
+
       return null;
     }, [basInitialized.value]); // depend on basInitialized value to run once
 
@@ -73,6 +75,13 @@ class SkrinUtama extends HookWidget {
                   .where((e) => e.kodLaluan == 'T852')
                   .first
                   .jadual,
+            ),
+            FButton(
+              label: const Text('Button'),
+              onPress: () async {
+                final lala = LaluanBasDao(lokalState.db);
+                await lala.jadualKetibaanMengikut(kodLaluan: 't542');
+              },
             ),
           ],
         ),

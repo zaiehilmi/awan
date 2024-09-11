@@ -1,73 +1,94 @@
 import 'package:collection/collection.dart';
+import 'package:drift/drift.dart';
 
 import '../../model/gtfs/index.dart';
 import '../../model/gtfs/semua_data.dart';
 import '../../util/roggle.dart';
+import '../jadual.dart';
+import '../pangkalan_data.dart';
 
-Future<List<Laluan>> getSemuaLaluan() async {
-  final dataLaluan = dataBas.semuaLaluan;
+part 'laluan_bas.g.dart';
 
-  dataLaluan.forEachIndexed((i, laluan) => rog.d('$i ${laluan.toString()}'));
+@DriftAccessor(tables: [
+  LaluanEntiti,
+  WaktuBerhentiEntiti,
+  PerjalananEntiti
+])
+class LaluanBasDao extends DatabaseAccessor<AppDatabase> with _$LaluanBasDaoMixin {
+  LaluanBasDao(super.db);
 
-  return dataLaluan;
-}
+  Future<List<String>> semuaLaluan() async {
+    final query = await (
+        select(db.laluanEntiti)
+          ..addColumns([
+            db.laluanEntiti.namaPenuh
+          ])
+    ).get();
 
-/// mendapatkan jadual bas. Berikan [bas] dengan kod laluan seperti `T542`, `T852`
-@Deprecated('Akan gunakan database pula lpsni')
-Future<List<DateTime>> jadualKetibaan({required String bas}) async {
-  // Cari laluan berdasarkan kod laluan
-  final turasKodLaluan = _cariLaluan(bas);
-  if (turasKodLaluan == null) return [];
-
-  // Dapatkan senarai masa ketibaan
-  final listWaktuBerhenti = _dapatkanMasaKetibaan(turasKodLaluan.idLaluan);
-
-  // Map untuk mendapatkan ketibaan, tapis null, dan sort
-  final jadual = listWaktuBerhenti
-      .map((e) => e.ketibaan)
-      .whereType<DateTime>() // Hanya benarkan DateTime, tapis null
-      .toSet()
-      .toList()
-    ..sort((a, b) => a.compareTo(b)); // Sort dalam urutan menaik
-
-  return jadual;
-}
-
-// MARK: UTILITI
-
-/// Fungsi untuk mencari laluan berdasarkan kod laluan
-Laluan? _cariLaluan(String kodLaluan) {
-  final dataLaluan = dataBas.semuaLaluan;
-
-  return dataLaluan.singleWhereIndexedOrNull(
-    (index, l) => l.namaPenuh == kodLaluan,
-  );
-}
-
-/// Fungsi untuk mendapatkan masa ketibaan
-List<WaktuBerhenti> _dapatkanMasaKetibaan(String idLaluan) {
-  final dataPerjalanan = dataBas.semuaPerjalanan;
-  final dataWaktuBerhenti = dataBas.semuaWaktuBerhenti;
-  List<WaktuBerhenti> wb = [];
-
-  final turasPerjalanan = dataPerjalanan.where(
-    (p) => p.idLaluan == idLaluan,
-  );
-
-  for (var perjalanan in turasPerjalanan) {
-    var masaBerlepas = dataWaktuBerhenti.firstWhere(
-      (wbItem) => wbItem.idPerjalanan == perjalanan.idPerjalanan,
-    );
-    wb.add(masaBerlepas);
+    return query.map((row) => row.namaPenuh).toList();
   }
 
-  return wb.toSet().toList(); // Hapuskan pendua
-}
+  /// cara baca: jadual ketibaan mengikut kod laluan
+  Future<List<DateTime>> jadualKetibaanMengikut({required String kodLaluan}) async {
+    final laluan = await _cariLaluan(kodLaluan);
+    if (laluan == null) {
+      rog.i('$kodLaluan tidak ditemui');
+      return [];
+    }
 
-/// Fungsi untuk membandingkan waktu ketibaan
-int _bandingkanKetibaan(DateTime? a, DateTime? b) {
-  if (a == null && b == null) return 0;
-  if (a == null) return 1;
-  if (b == null) return -1;
-  return a.compareTo(b);
+    rog.d('$kodLaluan ditemui -> Laluan.idLaluan: ${laluan.idLaluan}');
+
+    final senaraiWaktuBerhenti = await _dapatkanMasaKetibaana(laluan.idLaluan);
+
+    // Urus nilai null dan pendua, kemudian susun menaik
+    final jadual = senaraiWaktuBerhenti
+        .map((e) => e.ketibaan)
+        .whereType<DateTime>()
+        .toSet()
+        .toList()
+      ..sort((a, b) => a.compareTo(b));
+
+    rog.d('saiz jadual $kodLaluan: ${jadual.length}');
+    return jadual;
+  }
+
+  // MARK:- 🍄 Utiliti
+
+  /// Cari laluan berdasarkan kod laluan (dalam huruf kecil)
+  Future<LaluanEntitiData?> _cariLaluan(String kodLaluan) async {
+    return await (
+        select(laluanEntiti)
+          ..where((t) => t.namaPenuh.lower().equals(kodLaluan.toLowerCase()))
+          ..limit(1)
+    ).getSingleOrNull();
+  }
+
+  /// Cari perjalanan berdasarkan id laluan
+  Future<List<WaktuBerhentiEntitiData>> _dapatkanMasaKetibaana(String idLaluan) async {
+    List<WaktuBerhentiEntitiData> senaraiWaktuBerhenti = [];
+
+    final senaraiPerjalanan = await (
+      select(perjalananEntiti)
+        ..where((p) => p.idLaluan.equals(idLaluan))
+    ).get();
+
+    for (var p in senaraiPerjalanan) {
+      final masaKetibaan = await (
+        select(waktuBerhentiEntiti)
+          ..where((wb) => wb.idPerjalanan.equals(p.idPerjalanan))
+      ).get();
+
+      senaraiWaktuBerhenti.add(masaKetibaan[0]);  // index 0 bermaksud tmpt mula bergerak
+    }
+
+    return senaraiWaktuBerhenti.toSet().toList();
+  }
+
+  /// Dapatkan waktu berhenti berdasarkan id perjalanan
+  Future<List<WaktuBerhentiEntitiData>> _dapatkanWaktuBerhenti(String idPerjalanan) async {
+    return await (
+        select(db.waktuBerhentiEntiti)
+          ..where((t) => t.idPerjalanan.equals(idPerjalanan))
+    ).get();
+  }
 }
