@@ -1,6 +1,5 @@
 import 'package:awan/screen/index.dart';
 import 'package:awan/service/api/gtfs-statik.dart';
-import 'package:awan/service/state/vm_lokal.dart';
 import 'package:awan/service/tetapan.dart';
 import 'package:awan/util/roggle.dart';
 import 'package:flutter/material.dart';
@@ -20,10 +19,8 @@ void main() async {
   // memulakan storan lokal
   await Orange.init();
 
-  final allItems = await lokalState.db.select(lokalState.db.agensiEntiti).get();
-  print('object ${allItems.length}');
-
   await apiGtfsStatik(JenisPerkhidmatan.basPerantaraMrt);
+
   // await fetchPrasaranaApi(JenisPerkhidmatan.basKL);
 
   runApp(Awan());

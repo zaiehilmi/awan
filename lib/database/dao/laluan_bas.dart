@@ -30,8 +30,6 @@ Future<List<DateTime>> jadualKetibaan({required String bas}) async {
       .toList()
     ..sort((a, b) => a.compareTo(b)); // Sort dalam urutan menaik
 
-  rog.i('Saiz ketibaan bas $bas: ${jadual.length}');
-
   return jadual;
 }
 

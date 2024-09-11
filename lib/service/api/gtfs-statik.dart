@@ -1,10 +1,14 @@
 import 'dart:io';
 
+import 'package:awan/database/dao/agensi.dart';
+import 'package:awan/model/constant/fail_txt.dart';
+import 'package:awan/util/baca_csv.dart';
 import 'package:awan/util/roggle.dart';
 import 'package:dio/dio.dart';
 import 'package:orange/orange.dart';
 
 import '../../model/constant/jenis_perkhidmatan.dart';
+import '../../model/gtfs/index.dart';
 import '../tetapan.dart';
 
 final _options = BaseOptions(
@@ -39,11 +43,13 @@ Future<void> apiGtfsStatik(
     if (failBelumWujud) {
       // Fail belum wujud, terus muat turun
       rog.i('Memuat turun fail dari ${response.requestOptions.path}');
-      Orange.setString('etag', etagBaru);
+
       await dio.download(laluanApi, kedudukanFail);
+      await _muatTurunBaharu(etag: etagBaru);
     } else if (semakPerubahan && kemaskiniTersedia) {
       rog.i('Terdapat perubahan pada fail, memuat turun versi baru...');
-      Orange.setString('etag', etagBaru);
+
+      _bilaKemaskiniTersedia(etag: etagBaru);
       await dio.download(laluanApi, kedudukanFail);
     } else if (kemaskiniTersedia == false) {
       rog.i('Tiada perubahan, fail tidak perlu dimuat turun');
@@ -59,4 +65,33 @@ Future<void> apiGtfsStatik(
   } finally {
     dio.close();
   }
+}
+
+Future<void> _muatTurunBaharu({required String etag}) async {
+  Orange.setString('etag', etag);
+
+  await _prosesData<Agensi>(FailTxt.agensi, addSemuaAgensiDao);
+  await _prosesData<Laluan>(FailTxt.laluan, addSemuaLaluanDao);
+  await _prosesData<Bentuk>(FailTxt.bentuk, addSemuaBentukDao);
+  await _prosesData<Hentian>(FailTxt.hentian, addSemuaHentianDao);
+  await _prosesData<WaktuBerhenti>(
+      FailTxt.waktuBerhenti, addSemuaWaktuBerhentiDao);
+}
+
+Future<void> _prosesData<T>(
+  FailTxt failTxt,
+  Future<void> Function(List<T>) insertFunction,
+) async {
+  final dataList = bacaCsv<T>(
+    dariTxt: failTxt,
+    endpoint: JenisPerkhidmatan.basPerantaraMrt,
+  );
+
+  await insertFunction(dataList);
+}
+
+Future<void> _bilaKemaskiniTersedia({required String etag}) async {
+  Orange.setString('etag', etag);
+
+  // delete table
 }
