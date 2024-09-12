@@ -25,7 +25,6 @@ class SkrinUtama extends HookWidget {
         await basState.masaKetibaan(bas: 'T818');
         await basState.masaKetibaan(bas: 'T852');
 
-        print('Bas Initialized');
         basInitialized.value = true;
       }
 

@@ -3,7 +3,7 @@ import 'package:drift/drift.dart';
 import '../pangkalan_data.dart';
 
 /// Mengumpulkan query yang berbahaya sahaja
-class ZonBahayaDao extends DatabaseAccessor<AppDatabase> {
+class ZonBahayaDao extends DatabaseAccessor<PangkalanDataApl> {
   ZonBahayaDao(super.db);
 
   /// buang semua data dan gantikan dengan data yang baru dari API

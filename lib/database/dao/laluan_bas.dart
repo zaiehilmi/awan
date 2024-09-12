@@ -11,7 +11,7 @@ part 'laluan_bas.g.dart';
   WaktuBerhentiEntiti,
   PerjalananEntiti
 ])
-class LaluanBasDao extends DatabaseAccessor<AppDatabase> with _$LaluanBasDaoMixin {
+class LaluanBasDao extends DatabaseAccessor<PangkalanDataApl> with _$LaluanBasDaoMixin {
   LaluanBasDao(super.db);
 
   Future<List<String>> semuaLaluan() async {

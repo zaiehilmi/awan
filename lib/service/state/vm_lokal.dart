@@ -3,7 +3,7 @@ import 'package:june/june.dart';
 
 class LokalVM extends JuneState {
   /// untuk database drift
-  AppDatabase db = AppDatabase();
+  PangkalanDataApl db = PangkalanDataApl();
 }
 
 var lokalState = June.getState(() => LokalVM());

@@ -18,8 +18,8 @@ part 'pangkalan_data.g.dart';
 ], daos: [
   LaluanBasDao
 ])
-class AppDatabase extends _$AppDatabase {
-  AppDatabase() : super(_openConnection());
+class PangkalanDataApl extends _$PangkalanDataApl {
+  PangkalanDataApl() : super(_openConnection());
 
   @override
   int get schemaVersion => 1;
