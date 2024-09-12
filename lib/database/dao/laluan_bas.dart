@@ -35,7 +35,7 @@ class LaluanBasDao extends DatabaseAccessor<AppDatabase> with _$LaluanBasDaoMixi
 
     rog.d('$kodLaluan ditemui -> Laluan.idLaluan: ${laluan.idLaluan}');
 
-    final senaraiWaktuBerhenti = await _dapatkanMasaKetibaana(laluan.idLaluan);
+    final senaraiWaktuBerhenti = await _dapatkanMasaKetibaan(laluan.idLaluan);
 
     // Urus nilai null dan pendua, kemudian susun menaik
     final jadual = senaraiWaktuBerhenti
@@ -61,7 +61,7 @@ class LaluanBasDao extends DatabaseAccessor<AppDatabase> with _$LaluanBasDaoMixi
   }
 
   /// Cari perjalanan berdasarkan id laluan
-  Future<List<WaktuBerhentiEntitiData>> _dapatkanMasaKetibaana(String idLaluan) async {
+  Future<List<WaktuBerhentiEntitiData>> _dapatkanMasaKetibaan(String idLaluan) async {
     List<WaktuBerhentiEntitiData> senaraiWaktuBerhenti = [];
 
     final senaraiPerjalanan = await (
