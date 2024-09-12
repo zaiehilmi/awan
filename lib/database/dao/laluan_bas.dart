@@ -14,15 +14,30 @@ part 'laluan_bas.g.dart';
 class LaluanBasDao extends DatabaseAccessor<PangkalanDataApl> with _$LaluanBasDaoMixin {
   LaluanBasDao(super.db);
 
-  Future<List<String>> semuaLaluan() async {
-    final query = await (
-        select(db.laluanEntiti)
-          ..addColumns([
-            db.laluanEntiti.namaPenuh
-          ])
-    ).get();
+  /// dapatkan semua laluan bas perantara MRT
+  Future<Map<String, String>> semuaLaluan() async {
+    List<MapEntry<String, String>> entriLaluan = [];
+    final senaraiLaluan = await select(db.laluanEntiti).get();
 
-    return query.map((row) => row.namaPenuh).toList();
+    for (var laluan in senaraiLaluan) {
+      final senaraiPerjalanan = await (
+          select(perjalananEntiti)
+            ..where((p) => p.idLaluan.equals(laluan.idLaluan))
+      ).get();
+
+      final namaPetunjuk = senaraiPerjalanan.isNotEmpty
+          ? senaraiPerjalanan.first.petunjukPerjalanan ?? laluan.namaPenuh
+          : laluan.namaPenuh;
+
+      entriLaluan.add(MapEntry(laluan.namaPenuh, namaPetunjuk));
+    }
+
+    entriLaluan.sort((a, b) => a.key.compareTo(b.key));
+
+    final memetakan = Map.fromEntries(entriLaluan);
+
+    rog.d('Saiz semua laluan: ${memetakan.length}');
+    return memetakan;
   }
 
   /// cara baca: jadual ketibaan mengikut kod laluan

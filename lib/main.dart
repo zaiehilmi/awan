@@ -47,7 +47,7 @@ class Awan extends HookWidget {
   final contents = [
     const SkrinUtama(),
     const SkrinKiraTambang(),
-    SkrinGelintar(),
+    const SkrinGelintar(),
     SkrinTetapan(),
   ];
 
@@ -62,7 +62,6 @@ class Awan extends HookWidget {
     }, []);
 
     return MaterialApp(
-      themeMode: ThemeMode.system,
       builder: (context, child) => FTheme(
         data: FThemes.rose.dark,
         child: child!,
