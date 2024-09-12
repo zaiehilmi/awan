@@ -1,8 +1,10 @@
 import 'package:intl/intl.dart';
 
 extension FormatMasa on DateTime {
+  /// tukar dari DateTime ke String dalam format 24 jam.
   String get format24Jam => DateFormat('HH:mm').format(this);
 
+  /// untuk menentukan jika masa itu ada selepas masa sekarang. Pemalam ini mengabaikan tarikh
   bool get iaSelepasSekarang {
     final sekarang = DateTime.now();
 
@@ -12,6 +14,7 @@ extension FormatMasa on DateTime {
     return masaKetibaanSahaja.isAfter(masaSekarangSahaja);
   }
 
+  /// mendapatkan perbezaan masa dalam [Duration]. Pemalam ini mengabaikan tarikh
   Duration get perbezaanMasa {
     final sekarang = DateTime.now();
 
