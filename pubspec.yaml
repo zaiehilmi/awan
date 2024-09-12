@@ -7,24 +7,33 @@ environment:
   sdk: ^3.5.1
 
 dependencies:
+  # ui
   flutter:
     sdk: flutter
-
+  flutter_hooks: ^0.20.5
   forui: ^0.4.0
   gap: ^3.0.1
-  path_provider: ^2.1.4
+  katana_router: ^2.4.0
+
+  # fungsi umum
+  archive: ^3.4.10
+  collection: ^1.18.0
+  crypto: ^3.0.3
+  csv: 6.0.0
+  dio: ^5.4.0
   june: ^1.0.0+1
-  flutter_hooks: ^0.20.5
   intl:
+  path_provider: ^2.1.4
+  roggle: ^0.4.2+1  # logging
+
+  # database
   drift: ^2.20.0
   drift_flutter: ^0.1.0
-  dio: ^5.4.0
-  archive: ^3.4.10
-  csv: 6.0.0
-  crypto: ^3.0.3
-  collection: ^1.18.0
-  roggle: ^0.4.2+1  # logging
   orange: ^1.2.8
+
+  # peta
+  flutter_map: ^7.0.2
+  latlong2: ^0.9.1
 
 dev_dependencies:
   flutter_test:
