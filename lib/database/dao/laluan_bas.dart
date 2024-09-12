@@ -1,8 +1,5 @@
-import 'package:collection/collection.dart';
 import 'package:drift/drift.dart';
 
-import '../../model/gtfs/index.dart';
-import '../../model/gtfs/semua_data.dart';
 import '../../util/roggle.dart';
 import '../jadual.dart';
 import '../pangkalan_data.dart';

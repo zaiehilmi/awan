@@ -24,13 +24,11 @@ class PaparanRingkas extends HookWidget {
   });
 
   ({int indeks, Duration? durasiUntukBasSeterusnya}) _getIndeksBasSeterusnya() {
-    DateTime sekarang = DateTime.now();
-
     for (int i = 0; i < listJadual.length; i++) {
-      if (isTimeAfter(listJadual[i], sekarang)) {
+      if (listJadual[i].iaSelepasSekarang) {
         return (
           indeks: i,
-          durasiUntukBasSeterusnya: listJadual[i].difference(sekarang),
+          durasiUntukBasSeterusnya: listJadual[i].perbezaanMasa,
         );
       }
     }
