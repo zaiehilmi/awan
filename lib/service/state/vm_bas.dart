@@ -2,7 +2,7 @@ import 'package:awan/model/jadual_bas.dart';
 import 'package:awan/service/state/vm_lokal.dart';
 import 'package:june/june.dart';
 
-import '../../database/dao/laluan_bas.dart';
+import '../../database/dao/entiti/laluan_bas.dart';
 
 class BasVM extends JuneState {
   List<JadualBas> senaraiLaluan = [];

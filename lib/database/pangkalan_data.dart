@@ -6,8 +6,8 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
 import '../model/gtfs/index.dart';
-import 'dao/laluan_bas.dart';
-import 'dao/waktu_berhenti.dart';
+import 'dao/entiti/laluan_bas.dart';
+import 'dao/entiti/waktu_berhenti.dart';
 import 'jadual.dart';
 
 part 'pangkalan_data.g.dart';

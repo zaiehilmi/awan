@@ -1,4 +1,4 @@
-import 'package:awan/database/dao/laluan_bas.dart';
+import 'package:awan/database/dao/entiti/laluan_bas.dart';
 import 'package:awan/service/state/vm_lokal.dart';
 import 'package:awan/theme/tema.dart';
 import 'package:flutter/cupertino.dart';

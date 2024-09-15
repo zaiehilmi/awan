@@ -1,7 +1,7 @@
 import 'package:awan/database/pangkalan_data.dart';
 import 'package:drift/drift.dart';
 
-import '../jadual.dart';
+import '../../jadual.dart';
 
 part 'waktu_berhenti.g.dart';
 
@@ -15,7 +15,8 @@ class WaktuBerhentiDao //
   ///
   /// Jika memberikan kedua-dua parameter, [idPerjalanan] akan diutamakan.
   /// Jika ingin mendapatkan data menggunakan [idPerjalanan],
-  /// pastikan untuk memberikan juga nilai kepada [susunanBerhenti] atau nilai lalai ialah 1
+  /// pastikan untuk memberikan juga nilai kepada [susunanBerhenti] atau nilai
+  /// lalai ialah 1.
   Future<WaktuBerhentiEntitiData?> dapatkanMelalui({
     String? idPerjalanan,
     String? idHentian,
@@ -38,27 +39,27 @@ class WaktuBerhentiDao //
     return await query.getSingleOrNull();
   }
 
-  /// dapatakan senarai
+  /// dapatakan senarai [WaktuBerhentiEntitiData] yang disusun mengikut susunan
+  /// menaik [WaktuBerhentiEntitiData.susunanBerhenti].
+  ///
+  /// Wajib memberikan [idPerjalanan]. Ubah susunan data kepada menurun menggunakan
+  /// [susunMenaikSusunanBerhenti].
   Future<List<WaktuBerhentiEntitiData>?> dapatkanSemuaMelalui({
-    String? idPerjalanan,
+    required String idPerjalanan,
     bool susunMenaikSusunanBerhenti = true,
   }) async {
     final query = select(waktuBerhentiEntiti);
 
-    if (idPerjalanan != null) {
-      query.where((wb) => wb.idPerjalanan.equals(idPerjalanan));
-    } else {
-      throw ArgumentError('Kenapa kosong je `idPerjalanan` tu!!');
-    }
-
-    query.orderBy([
-      (wb) => OrderingTerm(
-            expression: wb.susunanBerhenti,
-            mode: susunMenaikSusunanBerhenti
-                ? OrderingMode.asc
-                : OrderingMode.desc,
-          )
-    ]);
+    query
+      ..where((wb) => wb.idPerjalanan.equals(idPerjalanan))
+      ..orderBy([
+        (wb) => OrderingTerm(
+              expression: wb.susunanBerhenti,
+              mode: susunMenaikSusunanBerhenti
+                  ? OrderingMode.asc
+                  : OrderingMode.desc,
+            )
+      ]);
 
     return await query.get();
   }

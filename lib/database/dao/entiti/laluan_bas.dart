@@ -1,10 +1,10 @@
-import 'package:awan/database/dao/waktu_berhenti.dart';
+import 'package:awan/database/dao/entiti/waktu_berhenti.dart';
 import 'package:awan/service/state/vm_lokal.dart';
 import 'package:drift/drift.dart';
 
-import '../../util/roggle.dart';
-import '../jadual.dart';
-import '../pangkalan_data.dart';
+import '../../../util/roggle.dart';
+import '../../jadual.dart';
+import '../../pangkalan_data.dart';
 
 part 'laluan_bas.g.dart';
 
