@@ -45,7 +45,8 @@ class LaluanBasDao //
     return await query.getSingleOrNull();
   }
 
-  Future<List<LaluanEntitiData>?> dapatkanSemua() async =>
+  /// dapatkan senarai penuh [LaluanEntitiData] tanpa sebarang syarat
+  Future<List<LaluanEntitiData>> dapatkanSemua() async =>
       await select(laluanEntiti).get();
 
   // ================================================================================
