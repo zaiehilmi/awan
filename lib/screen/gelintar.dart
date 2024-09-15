@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:forui/forui.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
 import '../util/roggle.dart';
 
@@ -57,6 +58,7 @@ class SkrinGelintar extends HookWidget {
             return GestureDetector(
               onTap: () {
                 rog.i('Tekan ${item.key}');
+                context.go('/butiranLaluan');
               },
               child: FCard(
                 style: gayaKad,
@@ -66,7 +68,7 @@ class SkrinGelintar extends HookWidget {
                       width: 72,
                       child: FBadge(label: Text(item.key)),
                     ),
-                    const Gap(10),
+                    const Gap(20),
                     Expanded(
                       child: Container(
                         height: 60,
@@ -74,10 +76,9 @@ class SkrinGelintar extends HookWidget {
                         child: Text(
                           item.value,
                           style: gayaTulisan(context).sm.copyWith(
-                                fontWeight: FontWeight.w400,
-                                height: 1.4,
-                                color: skemaWarna(context).secondaryForeground
-                              ),
+                              fontWeight: FontWeight.w400,
+                              height: 1.4,
+                              color: skemaWarna(context).secondaryForeground),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -96,7 +97,8 @@ class SkrinGelintar extends HookWidget {
 
     return Column(
       children: [
-        SizedBox( // bawak dia turun bawah nanti
+        SizedBox(
+          // bawak dia turun bawah nanti
           height: 70,
           child: Center(
             child: FTextField(
@@ -108,12 +110,11 @@ class SkrinGelintar extends HookWidget {
         ),
         Expanded(
           child: Scrollbar(
-              radius: const Radius.circular(10),
-              thumbVisibility: true,
-              child: paparSenaraiLaluan(),
+            radius: const Radius.circular(10),
+            thumbVisibility: true,
+            child: paparSenaraiLaluan(),
           ),
         ),
-
       ],
     );
   }
