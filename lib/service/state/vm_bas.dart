@@ -12,7 +12,8 @@ class BasVM extends JuneState {
 
     if (!laluanTelahWujud) {
       final laluanDao = LaluanBasDao(lokalState.db);
-      final senaraiKetibaan = await laluanDao.jadualKetibaanMengikut(kodLaluan: bas);
+      final senaraiKetibaan = await laluanDao //
+          .jadualKetibaanMengikut(kodLaluan: bas);
 
       senaraiLaluan.add(JadualBas(
         kodLaluan: bas,

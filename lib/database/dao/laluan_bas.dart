@@ -1,3 +1,5 @@
+import 'package:awan/database/dao/waktu_berhenti.dart';
+import 'package:awan/service/state/vm_lokal.dart';
 import 'package:drift/drift.dart';
 
 import '../../util/roggle.dart';
@@ -9,10 +11,13 @@ part 'laluan_bas.g.dart';
 @DriftAccessor(tables: [
   LaluanEntiti,
   WaktuBerhentiEntiti,
-  PerjalananEntiti
+  PerjalananEntiti,
 ])
-class LaluanBasDao extends DatabaseAccessor<PangkalanDataApl> with _$LaluanBasDaoMixin {
+class LaluanBasDao //
+    extends DatabaseAccessor<PangkalanDataApl> with _$LaluanBasDaoMixin {
   LaluanBasDao(super.db);
+
+  final waktuBerhentiDato = WaktuBerhentiDao(lokalState.db);
 
   /// dapatkan semua laluan bas perantara MRT
   Future<Map<String, String>> semuaLaluan() async {
@@ -20,10 +25,11 @@ class LaluanBasDao extends DatabaseAccessor<PangkalanDataApl> with _$LaluanBasDa
     final senaraiLaluan = await select(db.laluanEntiti).get();
 
     for (var laluan in senaraiLaluan) {
-      final senaraiPerjalanan = await (
-          select(perjalananEntiti)
-            ..where((p) => p.idLaluan.equals(laluan.idLaluan))
-      ).get();
+      final senaraiPerjalanan = await ( //
+              select(perjalananEntiti)
+                ..where((p) => p.idLaluan.equals(laluan.idLaluan)) //
+          )
+          .get();
 
       final namaPetunjuk = senaraiPerjalanan.isNotEmpty
           ? senaraiPerjalanan.first.petunjukPerjalanan ?? laluan.namaPenuh
@@ -41,7 +47,9 @@ class LaluanBasDao extends DatabaseAccessor<PangkalanDataApl> with _$LaluanBasDa
   }
 
   /// cara baca: jadual ketibaan mengikut kod laluan
-  Future<List<DateTime>> jadualKetibaanMengikut({required String kodLaluan}) async {
+  Future<List<DateTime>> jadualKetibaanMengikut({
+    required String kodLaluan,
+  }) async {
     final laluan = await _cariLaluan(kodLaluan);
     if (laluan == null) {
       rog.i('$kodLaluan tidak ditemui');
@@ -59,6 +67,9 @@ class LaluanBasDao extends DatabaseAccessor<PangkalanDataApl> with _$LaluanBasDa
         .toSet()
         .toList()
       ..sort((a, b) => a.compareTo(b));
+    for (var e in jadual) {
+      rog.d(e);
+    }
 
     rog.d('saiz jadual $kodLaluan: ${jadual.length}');
     return jadual;
@@ -68,39 +79,83 @@ class LaluanBasDao extends DatabaseAccessor<PangkalanDataApl> with _$LaluanBasDa
 
   /// Cari laluan berdasarkan kod laluan (dalam huruf kecil)
   Future<LaluanEntitiData?> _cariLaluan(String kodLaluan) async {
-    return await (
-        select(laluanEntiti)
-          ..where((t) => t.namaPenuh.lower().equals(kodLaluan.toLowerCase()))
-          ..limit(1)
-    ).getSingleOrNull();
+    return await ( //
+            select(laluanEntiti)
+              ..where((t) => t.namaPenuh //
+                  .lower() //
+                  .equals(kodLaluan.toLowerCase()))
+              ..limit(1) //
+        )
+        .getSingleOrNull();
   }
 
   /// Cari perjalanan berdasarkan id laluan
-  Future<List<WaktuBerhentiEntitiData>> _dapatkanMasaKetibaan(String idLaluan) async {
+  Future<List<WaktuBerhentiEntitiData>> _dapatkanMasaKetibaan(
+      String idLaluan) async {
     List<WaktuBerhentiEntitiData> senaraiWaktuBerhenti = [];
 
-    final senaraiPerjalanan = await (
-      select(perjalananEntiti)
-        ..where((p) => p.idLaluan.equals(idLaluan))
-    ).get();
+    final senaraiPerjalanan = await ( //
+            select(perjalananEntiti) //
+              ..where((p) => p.idLaluan.equals(idLaluan)) //
+        )
+        .get();
 
     for (var p in senaraiPerjalanan) {
-      final masaKetibaan = await (
-        select(waktuBerhentiEntiti)
-          ..where((wb) => wb.idPerjalanan.equals(p.idPerjalanan))
-      ).get();
+      final masaKetibaan = await ( //
+              select(waktuBerhentiEntiti) //
+                ..orderBy([
+                  (t) => OrderingTerm(
+                        expression: t.ketibaan,
+                        mode: OrderingMode.asc,
+                      )
+                ])
+                ..where((wb) => wb.idPerjalanan.equals(p.idPerjalanan)) //
+          )
+          .get();
 
-      senaraiWaktuBerhenti.add(masaKetibaan[0]);  // index 0 bermaksud tmpt mula bergerak
+      senaraiWaktuBerhenti
+          .add(masaKetibaan[0]); // index 0 bermaksud tmpt mula bergerak
     }
 
     return senaraiWaktuBerhenti.toSet().toList();
   }
 
+  // Future<List<DateTime?>> _dapatkanMasaKetibaan(String idLaluan) async {
+  //   List<DateTime?> senaraiWaktuBerhenti = [];
+  //
+  //   final senaraiPerjalanan = await (
+  //       select(perjalananEntiti)
+  //         ..where((p) => p.idLaluan.equals(idLaluan))
+  //   ).get();
+  //
+  //   for (var p in senaraiPerjalanan) {
+  //     // rog.i('Perjalanan.idPerjalanan: ${p.idPerjalanan}');
+  //     final masaKetibaan = await (
+  //         select(waktuBerhentiEntiti)
+  //           ..where((wb) => wb.idPerjalanan.equals(p.idPerjalanan))
+  //     ).get();
+  //
+  //     final lala = masaKetibaan
+  //         .where((e) => e.ketibaan is DateTime)
+  //         .map((e) => e.ketibaan)
+  //         .whereType<DateTime>()
+  //         .toSet()
+  //         .toList()
+  //         ..sort((a, b) => a.compareTo(b));
+  //     rog.i('WaktuBerhenti.ketibaan: ${lala[0]}');
+  //     senaraiWaktuBerhenti.add(masaKetibaan[0].ketibaan);  // index 0 bermaksud tmpt mula bergerak
+  //   }
+  //
+  //   return senaraiWaktuBerhenti.toSet().toList();
+  // }
+
   /// Dapatkan waktu berhenti berdasarkan id perjalanan
-  Future<List<WaktuBerhentiEntitiData>> _dapatkanWaktuBerhenti(String idPerjalanan) async {
-    return await (
-        select(db.waktuBerhentiEntiti)
-          ..where((t) => t.idPerjalanan.equals(idPerjalanan))
-    ).get();
+  Future<List<WaktuBerhentiEntitiData>> _dapatkanWaktuBerhenti(
+      String idPerjalanan) async {
+    return await ( //
+            select(db.waktuBerhentiEntiti) //
+              ..where((t) => t.idPerjalanan.equals(idPerjalanan)) //
+        )
+        .get();
   }
 }

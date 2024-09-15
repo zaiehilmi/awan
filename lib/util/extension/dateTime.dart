@@ -9,7 +9,14 @@ extension FormatMasa on DateTime {
     final sekarang = DateTime.now();
 
     final masaKetibaanSahaja = DateTime(2000, 1, 1, hour, minute, second);
-    final masaSekarangSahaja = DateTime(2000, 1, 1, sekarang.hour, sekarang.minute, sekarang.second);
+    final masaSekarangSahaja = DateTime(
+      2000,
+      1,
+      1,
+      sekarang.hour,
+      sekarang.minute,
+      sekarang.second,
+    );
 
     return masaKetibaanSahaja.isAfter(masaSekarangSahaja);
   }
@@ -19,7 +26,14 @@ extension FormatMasa on DateTime {
     final sekarang = DateTime.now();
 
     final masaKetibaanSahaja = DateTime(2000, 1, 1, hour, minute, second);
-    final masaSekarangSahaja = DateTime(2000, 1, 1, sekarang.hour, sekarang.minute, sekarang.second);
+    final masaSekarangSahaja = DateTime(
+      2000,
+      1,
+      1,
+      sekarang.hour,
+      sekarang.minute,
+      sekarang.second,
+    );
 
     return masaKetibaanSahaja.difference(masaSekarangSahaja);
   }
