@@ -20,17 +20,19 @@ class WaktuBerhentiDao //
   Future<WaktuBerhentiEntitiData?> dapatkanMelalui({
     String? idPerjalanan,
     String? idHentian,
+    WaktuBerhentiEntitiData? dataWaktuBerhenti,
     int susunanBerhenti = 1,
   }) async {
     final query = select(waktuBerhentiEntiti);
 
     if (idPerjalanan != null) {
-      query
-        ..where((wb) => wb.idPerjalanan.equals(idPerjalanan))
-        ..where((wb) => wb.susunanBerhenti.equals(susunanBerhenti));
+      query.where((wb) =>
+          wb.idPerjalanan.equals(idPerjalanan) &
+          wb.susunanBerhenti.equals(susunanBerhenti));
     } else if (idHentian != null) {
-      query //
-          .where((wb) => wb.idHentian.equals(idHentian));
+      query.where((wb) => wb.idHentian.equals(idHentian));
+    } else if (dataWaktuBerhenti != null) {
+      query.whereSamePrimaryKey(dataWaktuBerhenti);
     } else {
       throw ArgumentError(
           'Perlu sekurang-kurangnya memberikan `idPerjalanan` atau `idHentian`');

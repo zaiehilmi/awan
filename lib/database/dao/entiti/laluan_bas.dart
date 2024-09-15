@@ -1,5 +1,3 @@
-import 'package:awan/database/dao/entiti/waktu_berhenti.dart';
-import 'package:awan/service/state/vm_lokal.dart';
 import 'package:drift/drift.dart';
 
 import '../../../util/roggle.dart';
@@ -17,9 +15,42 @@ class LaluanBasDao //
     extends DatabaseAccessor<PangkalanDataApl> with _$LaluanBasDaoMixin {
   LaluanBasDao(super.db);
 
-  final waktuBerhentiDato = WaktuBerhentiDao(lokalState.db);
+  /// dapatkan 1 baris [LaluanEntitiData].
+  ///
+  /// berikan sama ada (semakin ke atas, semakin diutamakan):
+  /// - [kodLaluan] seperti `"T542"`
+  /// - [idLaluan]
+  /// - [dataLaluan]
+  Future<LaluanEntitiData?> dapatkanMelalui({
+    String? kodLaluan,
+    String? idLaluan,
+    LaluanEntitiData? dataLaluan,
+  }) async {
+    final query = select(laluanEntiti);
 
+    if (kodLaluan != null) {
+      // lakukan carian hanya dengan upper case
+      query.where((l) => l.namaPenuh.equals(kodLaluan.toUpperCase()));
+    } else if (idLaluan != null) {
+      query.where((l) => l.idLaluan.equals(idLaluan));
+    } else if (dataLaluan != null) {
+      query.whereSamePrimaryKey(dataLaluan);
+    } else {
+      throw ArgumentError(
+          'Perlu sekurang-kurangnya memberikan `kodLaluan`, `idLaluan`, atau `dataLaluan`');
+    }
+
+    query.limit(1);
+
+    return await query.getSingleOrNull();
+  }
+
+  Future<List<LaluanEntitiData>?> dapatkanSemua() async =>
+      await select(laluanEntiti).get();
+
+  // ================================================================================
   /// dapatkan semua laluan bas perantara MRT
+  @Deprecated('tidak digunakan selepas ini sebab salah')
   Future<Map<String, String>> semuaLaluan() async {
     List<MapEntry<String, String>> entriLaluan = [];
     final senaraiLaluan = await select(db.laluanEntiti).get();
@@ -47,6 +78,7 @@ class LaluanBasDao //
   }
 
   /// cara baca: jadual ketibaan mengikut kod laluan
+  @Deprecated('tidak digunakan selepas ini sebab salah')
   Future<List<DateTime>> jadualKetibaanMengikut({
     required String kodLaluan,
   }) async {
@@ -78,6 +110,7 @@ class LaluanBasDao //
   // MARK:- 🍄 Utiliti
 
   /// Cari laluan berdasarkan kod laluan (dalam huruf kecil)
+  @Deprecated('tidak digunakan selepas ini sebab salah')
   Future<LaluanEntitiData?> _cariLaluan(String kodLaluan) async {
     return await ( //
             select(laluanEntiti)
@@ -90,6 +123,7 @@ class LaluanBasDao //
   }
 
   /// Cari perjalanan berdasarkan id laluan
+  @Deprecated('tidak digunakan selepas ini sebab salah')
   Future<List<WaktuBerhentiEntitiData>> _dapatkanMasaKetibaan(
       String idLaluan) async {
     List<WaktuBerhentiEntitiData> senaraiWaktuBerhenti = [];
@@ -150,6 +184,7 @@ class LaluanBasDao //
   // }
 
   /// Dapatkan waktu berhenti berdasarkan id perjalanan
+  @Deprecated('tidak digunakan selepas ini sebab salah')
   Future<List<WaktuBerhentiEntitiData>> _dapatkanWaktuBerhenti(
       String idPerjalanan) async {
     return await ( //
