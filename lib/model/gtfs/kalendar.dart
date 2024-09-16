@@ -4,7 +4,7 @@ enum Ketersediaan { ya, tidak }
 
 /// diambil daripada calendar.txt
 class Kalendar {
-  String idKalendar;
+  String idPerkhidmatan;
   Ketersediaan isnin;
   Ketersediaan selasa;
   Ketersediaan rabu;
@@ -13,10 +13,10 @@ class Kalendar {
   Ketersediaan sabtu;
   Ketersediaan ahad;
   DateTime tarikhMula;
-  DateTime tarikhAkhir;
+  DateTime tarikhTamat;
 
   Kalendar(
-    this.idKalendar,
+    this.idPerkhidmatan,
     this.isnin,
     this.selasa,
     this.rabu,
@@ -25,7 +25,7 @@ class Kalendar {
     this.sabtu,
     this.ahad,
     this.tarikhMula,
-    this.tarikhAkhir,
+    this.tarikhTamat,
   );
 
   factory Kalendar.dariCsv(List<dynamic> data, JenisPerkhidmatan perkhidmatan) {
@@ -45,10 +45,10 @@ class Kalendar {
 
   @override
   String toString() =>
-      'Kalendar{id: $idKalendar, isnin: $isnin, selasa: $selasa, rabu: $rabu, khamis: $khamis, jumaat: $jumaat, sabtu: $sabtu, ahad: $ahad, tarikhMula: $tarikhMula, tarikhAkhir: $tarikhAkhir}';
+      'Kalendar{id: $idPerkhidmatan, isnin: $isnin, selasa: $selasa, rabu: $rabu, khamis: $khamis, jumaat: $jumaat, sabtu: $sabtu, ahad: $ahad, tarikhMula: $tarikhMula, tarikhAkhir: $tarikhTamat}';
 }
 
 Ketersediaan _tukar(int nilai) => switch (nilai) {
-      0 => Ketersediaan.ya,
+      1 => Ketersediaan.ya,
       int() => Ketersediaan.tidak,
     };

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:awan/database/dao/ingest_ke_pangkalanData.dart';
 import 'package:awan/model/constant/fail_txt.dart';
+import 'package:awan/service/state/vm_bas.dart';
 import 'package:awan/util/baca_csv.dart';
 import 'package:awan/util/roggle.dart';
 import 'package:dio/dio.dart';
@@ -73,6 +74,7 @@ Future<void> _muatTurunBaharu({required String etag}) async {
   await _prosesData<Agensi>(FailTxt.agensi, addSemuaAgensiDao);
   await _prosesData<Bentuk>(FailTxt.bentuk, addSemuaBentukDao);
   await _prosesData<Hentian>(FailTxt.hentian, addSemuaHentianDao);
+  await _prosesData<Kalendar>(FailTxt.kalendar, addSemuaKalendarDao);
   await _prosesData<Laluan>(FailTxt.laluan, addSemuaLaluanDao);
   await _prosesData<Perjalanan>(FailTxt.perjalanan, addSemuaPerjalananDao);
   await _prosesData<WaktuBerhenti>(

@@ -17,6 +17,7 @@ part 'pangkalan_data.g.dart';
   BentukEntiti,
   FrekuensiEntiti,
   HentianEntiti,
+  KalendarEntiti,
   LaluanEntiti,
   PerjalananEntiti,
   WaktuBerhentiEntiti,

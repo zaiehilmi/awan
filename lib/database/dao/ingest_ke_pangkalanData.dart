@@ -68,7 +68,26 @@ Future<void> addSemuaHentianDao(List<Hentian> entri) async {
   rog.i('Saiz Hentian\t${semua.length}');
 }
 
-// TODO: kalendar entiti
+Future<void> addSemuaKalendarDao(List<Kalendar> entri) async {
+  await _db.batch((batch) => batch.insertAll(
+        _db.kalendarEntiti,
+        entri.map((e) => KalendarEntitiCompanion.insert(
+              idPerkhidmatan: e.idPerkhidmatan,
+              isnin: e.isnin,
+              selasa: e.selasa,
+              rabu: e.rabu,
+              khamis: e.khamis,
+              jumaat: e.jumaat,
+              sabtu: e.sabtu,
+              ahad: e.ahad,
+              tarikhMula: e.tarikhMula,
+              tarikhTamat: e.tarikhTamat,
+            )),
+      ));
+
+  final semua = await _db.select(_db.kalendarEntiti).get();
+  rog.i('Saiz Kalendar\t${semua.length}');
+}
 
 Future<void> addSemuaLaluanDao(List<Laluan> entri) async {
   await _db.batch((batch) => batch.insertAll(
