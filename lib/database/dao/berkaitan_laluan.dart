@@ -58,6 +58,8 @@ class DaoBerkaitanLaluan extends DatabaseAccessor<PangkalanDataApl> {
       }
     }
 
+    senaraiWaktuBerhenti.sort((a, b) => a.compareTo(b));
+
     return senaraiWaktuBerhenti;
   }
 }
