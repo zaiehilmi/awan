@@ -1,14 +1,10 @@
 import 'package:awan/router.dart';
-import 'package:awan/service/api/gtfs-statik.dart';
 import 'package:awan/service/tetapan.dart';
-import 'package:awan/util/roggle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:forui/forui.dart';
 import 'package:orange/orange.dart';
 import 'package:path_provider/path_provider.dart';
-
-import 'model/constant/jenis_perkhidmatan.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,8 +14,6 @@ void main() async {
 
   // memulakan storan lokal
   await Orange.init();
-
-  await apiGtfsStatik(JenisPerkhidmatan.basPerantaraMrt);
 
   runApp(const Awan());
 }

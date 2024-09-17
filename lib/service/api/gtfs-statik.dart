@@ -10,6 +10,7 @@ import 'package:orange/orange.dart';
 
 import '../../model/constant/jenis_perkhidmatan.dart';
 import '../../model/gtfs/index.dart';
+import '../state/vm_lokal.dart';
 import '../tetapan.dart';
 
 final _options = BaseOptions(
@@ -30,6 +31,8 @@ Future<void> apiGtfsStatik(
       : '${Tetapan.filePath}/out/${perkhidmatan.nama}.zip';
   final laluanApi = '?category=${perkhidmatan.nama}';
 
+  lokalState.memuatkanDb(kemajuan: 0.1);
+
   try {
     if (Tetapan.token != null) {
       _options.headers = {'Authorization': 'Bearer ${Tetapan.token}'};
@@ -40,6 +43,8 @@ Future<void> apiGtfsStatik(
     final kemaskiniTersedia = Orange.getString('etag') != etagBaru;
     final failBelumWujud = !File(kedudukanFail).existsSync();
     rog.d(response.requestOptions.uri);
+
+    lokalState.memuatkanDb(kemajuan: 0.2);
 
     if (failBelumWujud) {
       // Fail belum wujud, terus muat turun
@@ -59,6 +64,8 @@ Future<void> apiGtfsStatik(
     }
 
     rog.i('Selesai memuat API');
+
+    lokalState.memuatkanDb(kemajuan: 1);
   } on DioException {
     rog.e('Masalah di Dio');
   } catch (e) {
@@ -71,16 +78,29 @@ Future<void> apiGtfsStatik(
 Future<void> _muatTurunBaharu({required String etag}) async {
   Orange.setString('etag', etag);
 
+  lokalState.memuatkanDb(kemajuan: 0.3);
+
   await _prosesData<Agensi>(FailTxt.agensi, addSemuaAgensiDao);
   await _prosesData<Bentuk>(FailTxt.bentuk, addSemuaBentukDao);
+
+  lokalState.memuatkanDb(kemajuan: 0.35);
+
   await _prosesData<Hentian>(FailTxt.hentian, addSemuaHentianDao);
   await _prosesData<Kalendar>(FailTxt.kalendar, addSemuaKalendarDao);
+
+  lokalState.memuatkanDb(kemajuan: 0.4);
+
   await _prosesData<Laluan>(FailTxt.laluan, addSemuaLaluanDao);
   await _prosesData<Perjalanan>(FailTxt.perjalanan, addSemuaPerjalananDao);
+
+  lokalState.memuatkanDb(kemajuan: 0.45);
+
   await _prosesData<WaktuBerhenti>(
     FailTxt.waktuBerhenti,
     addSemuaWaktuBerhentiDao,
   );
+
+  lokalState.memuatkanDb(kemajuan: 0.9);
 }
 
 Future<void> _prosesData<T>(
