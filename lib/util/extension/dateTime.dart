@@ -37,4 +37,6 @@ extension FormatMasa on DateTime {
 
     return masaKetibaanSahaja.difference(masaSekarangSahaja);
   }
+
+  DateTime get tarikhTanpaMasa => DateTime(year, month, day);
 }

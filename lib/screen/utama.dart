@@ -1,12 +1,13 @@
 import 'package:awan/service/state/vm_bas.dart';
 import 'package:awan/widget/paparan_ringkas.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:forui/forui.dart';
 import 'package:gap/gap.dart';
 import 'package:june/june.dart';
 
-import '../database/dao/laluan_bas.dart';
+import '../database/dao/berkaitan_laluan.dart';
 import '../model/gtfs/waktu_berhenti.dart';
 import '../service/state/vm_lokal.dart';
 
@@ -75,13 +76,16 @@ class SkrinUtama extends HookWidget {
                   .first
                   .jadual,
             ),
-            FButton(
-              label: const Text('Button'),
-              onPress: () async {
-                final lala = LaluanBasDao(lokalState.db);
-                await lala.jadualKetibaanMengikut(kodLaluan: 't542');
-              },
-            ),
+            if (kDebugMode)
+              FButton(
+                label: const Text('Button'),
+                onPress: () async {
+                  final lala = DaoBerkaitanLaluan(lokalState.db);
+                  final data1 =
+                      await lala.jadualKetibaanMengikut(kodLaluan: 't542');
+                  print(data1?.length);
+                },
+              ),
           ],
         ),
       ),

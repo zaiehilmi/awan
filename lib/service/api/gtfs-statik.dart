@@ -98,5 +98,8 @@ Future<void> _prosesData<T>(
 Future<void> _bilaKemaskiniTersedia({required String etag}) async {
   Orange.setString('etag', etag);
 
+  basState.senaraiLaluan = [];
+  basState.setState();
+
   // delete table
 }

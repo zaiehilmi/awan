@@ -2,7 +2,7 @@ import 'package:awan/model/jadual_bas.dart';
 import 'package:awan/service/state/vm_lokal.dart';
 import 'package:june/june.dart';
 
-import '../../database/dao/entiti/laluan_bas.dart';
+import '../../database/dao/berkaitan_laluan.dart';
 
 class BasVM extends JuneState {
   List<JadualBas> senaraiLaluan = [];
@@ -11,13 +11,14 @@ class BasVM extends JuneState {
     bool laluanTelahWujud = senaraiLaluan.any((item) => item.kodLaluan == bas);
 
     if (!laluanTelahWujud) {
-      final laluanDao = LaluanBasDao(lokalState.db);
-      final senaraiKetibaan = await laluanDao //
-          .jadualKetibaanMengikut(kodLaluan: bas);
+      final daoLaluan = DaoBerkaitanLaluan(lokalState.db);
+      final senaraiKetibaan = await daoLaluan.jadualKetibaanMengikut(
+        kodLaluan: bas,
+      );
 
       senaraiLaluan.add(JadualBas(
         kodLaluan: bas,
-        jadual: senaraiKetibaan,
+        jadual: senaraiKetibaan ?? [],
       ));
 
       basState.setState();
