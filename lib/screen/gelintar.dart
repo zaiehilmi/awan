@@ -1,4 +1,4 @@
-import 'package:awan/database/dao/entiti/laluan_bas.dart';
+import 'package:awan/database/dao/berkaitan_laluan.dart';
 import 'package:awan/service/state/vm_lokal.dart';
 import 'package:awan/theme/tema.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,9 +21,9 @@ class SkrinGelintar extends HookWidget {
 
     useEffect(() {
       Future<void> initAsync() async {
-        final laluanDao = LaluanBasDao(lokalState.db);
+        final daoLaluan = DaoBerkaitanLaluan(lokalState.db);
 
-        senaraiLaluan.value = await laluanDao.semuaLaluan();
+        senaraiLaluan.value = await daoLaluan.semuaLaluan();
         semuaLaluanInit.value = true;
       }
 

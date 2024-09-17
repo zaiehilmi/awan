@@ -62,4 +62,29 @@ class DaoBerkaitanLaluan extends DatabaseAccessor<PangkalanDataApl> {
 
     return senaraiWaktuBerhenti;
   }
+
+  /// Semua laluan bas
+  Future<Map<String, String>> semuaLaluan() async {
+    final laluanDao = LaluanBasDao(db);
+    final perjalananDao = PerjalananDao(db);
+
+    List<MapEntry<String, String>> entriLaluan = [];
+
+    final senaraiLaluan = await laluanDao.dapatkanSemua();
+    for (var l in senaraiLaluan) {
+      final p = await perjalananDao.dapatkanSemuaMelalui(idLaluan: l.idLaluan);
+
+      final namaPetunjuk = p!.isNotEmpty
+          ? p.first.petunjukPerjalanan ?? l.namaPenuh
+          : l.namaPenuh;
+
+      entriLaluan.add(MapEntry(l.namaPenuh, namaPetunjuk));
+    }
+
+    entriLaluan.sort((a, b) => a.key.compareTo(b.key));
+    final memetakan = Map.fromEntries(entriLaluan);
+
+    rog.d('Saiz semua laluan: ${memetakan.length}');
+    return memetakan;
+  }
 }
