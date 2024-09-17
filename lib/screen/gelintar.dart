@@ -58,7 +58,9 @@ class SkrinGelintar extends HookWidget {
             return GestureDetector(
               onTap: () {
                 rog.i('Tekan ${item.key}');
-                context.go('/butiranLaluan');
+                context.push(
+                  '/laluan_butiranUtama/${item.key}',
+                );
               },
               child: FCard(
                 style: gayaKad,

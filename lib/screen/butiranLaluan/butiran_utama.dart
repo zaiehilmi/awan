@@ -4,7 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 class LaluanButiranUtama extends HookWidget {
   String kodLaluan = '';
 
-  LaluanButiranUtama({super.key});
+  LaluanButiranUtama({super.key, required this.kodLaluan});
 
   @override
   Widget build(BuildContext context) {

@@ -1,6 +1,5 @@
 import 'package:awan/screen/butiranLaluan/butiran_utama.dart';
 import 'package:awan/screen/tanah.dart';
-import 'package:awan/util/extension/object.dart';
 import 'package:go_router/go_router.dart';
 
 final pergi = GoRouter(
@@ -8,17 +7,17 @@ final pergi = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      name: Tanah().namaKelas,
+      name: 'tanah',
       builder: (context, state) {
         return Tanah();
       },
     ),
     GoRoute(
-      path: '${LaluanButiranUtama().laluanRouter}/:kodLaluan',
-      name: LaluanButiranUtama().namaKelas,
+      path: '/laluan_butiranUtama/:kodLaluan',
+      name: 'laluan_butiranUtama',
       builder: (context, state) {
         final kodLaluan = state.pathParameters['kodLaluan']!;
-        return LaluanButiranUtama();
+        return LaluanButiranUtama(kodLaluan: kodLaluan);
       },
     ),
   ],
