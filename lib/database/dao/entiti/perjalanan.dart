@@ -12,8 +12,6 @@ class PerjalananDao //
   PerjalananDao(super.db);
 
   /// dapatkan 1 baris [PerjalananEntitiData]
-  ///
-  ///
   Future<PerjalananEntitiData?> dapatkanMelalui({
     required String idPerjalanan,
   }) async {
@@ -25,7 +23,8 @@ class PerjalananDao //
 
   /// dapatkan semua [PerjalananEntitiData].
   ///
-  /// > Jika hanya ingin menggunakan [idPerjalanan], pertimbangkan untuk menggunakan [dapatkanMelalui].
+  /// > Jika hanya ingin menggunakan [idPerjalanan], pertimbangkan untuk
+  /// menggunakan [dapatkanMelalui].
   ///
   /// Parameter boleh diumpuk iaitu syarat pencarian tidak terhad untuk 1 syarat
   /// sahaja tetapi untuk [idPerjalanan], query limit akan ditetapkan kepada 1
