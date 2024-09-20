@@ -6,11 +6,11 @@ extension Durasi on Duration {
     } else if (inMinutes == 1) {
       return '1 minit lagi';
     } else if (inMinutes < 60) {
-      return '${inMinutes} minit lagi';
+      return '$inMinutes minit lagi';
     } else if (inHours == 1) {
       return '1 jam lagi';
     } else {
-      return '${inHours} jam lagi';
+      return '$inHours jam lagi';
     }
   }
 }

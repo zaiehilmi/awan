@@ -10,9 +10,9 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
 class LaluanButiranUtama extends HookWidget {
-  String kodLaluan = '';
+  final String kodLaluan;
 
-  LaluanButiranUtama({super.key, required this.kodLaluan});
+  const LaluanButiranUtama({super.key, required this.kodLaluan});
 
   Widget _infoLaluan(
     BuildContext context, {

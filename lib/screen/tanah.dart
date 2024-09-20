@@ -51,6 +51,8 @@ class Tanah extends HookWidget {
       lokalState.memuatkanDb(kemajuan: 0.05);
 
       runAsync();
+
+      return null;
     }, []);
 
     return JuneBuilder(
