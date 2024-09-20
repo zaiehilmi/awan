@@ -56,10 +56,6 @@ class LaluanButiranUtama extends HookWidget {
                 )
               ],
             ),
-            Text('data'),
-            Text('data'),
-            Text('data'),
-            Text('data'),
           ],
         ),
       ),

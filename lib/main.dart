@@ -24,6 +24,7 @@ class Awan extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.dark,
       darkTheme: ThemeData(brightness: Brightness.dark),
       builder: (context, child) => FTheme(

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:awan/service/state/vm_lokal.dart';
+import 'package:awan/theme/tema.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:forui/forui.dart';
@@ -60,7 +61,10 @@ class Tanah extends HookWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text('Tahukah anda, burung boleh terbang 🕊️'),
+                    Text(
+                      'Tahukah anda, burung boleh terbang 🕊️',
+                      style: gayaTulisan(context).sm,
+                    ),
                     const Gap(20),
                     FProgress(
                       value: vm.kemajuanMemuatkanDb,
