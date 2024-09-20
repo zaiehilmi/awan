@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:awan/database/dao/ingest_ke_pangkalanData.dart';
+import 'package:awan/database/dao/zon_bahaya.dart';
 import 'package:awan/model/constant/fail_txt.dart';
 import 'package:awan/service/state/vm_bas.dart';
 import 'package:awan/util/baca_csv.dart';
@@ -122,4 +123,5 @@ Future<void> _bilaKemaskiniTersedia({required String etag}) async {
   basState.setState();
 
   // delete table
+  ZonBahayaDao(lokalState.db).kosongkanSemua();
 }
