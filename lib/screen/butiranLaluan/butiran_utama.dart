@@ -1,26 +1,82 @@
-import 'package:awan/database/dao/berkaitan_pemetaanPeta.dart';
+import 'package:awan/database/dao/berkaitan_laluan.dart';
 import 'package:awan/service/state/vm_lokal.dart';
+import 'package:awan/theme/tema.dart';
+import 'package:awan/util/extension/dateTime.dart';
+import 'package:awan/util/roggle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:forui/forui.dart';
-import 'package:latlong2/latlong.dart';
+import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
 class LaluanButiranUtama extends HookWidget {
   String kodLaluan = '';
 
   LaluanButiranUtama({super.key, required this.kodLaluan});
 
+  Widget _infoLaluan(
+    BuildContext context, {
+    DateTime? mula,
+    DateTime? akhir,
+  }) {
+    final waktuOperasi = '${mula?.format24Jam} - ${akhir?.format24Jam}';
+
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.only(
+          top: 60,
+          left: 10,
+          right: 10,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              kodLaluan,
+              style: gayaTulisan(context).xl2.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+            ),
+            Text('MRT Taman Equine - Taman Pinggiran Putra'),
+            const Gap(10),
+            Row(
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: Text(
+                    'Waktu Operasi',
+                    style: gayaTulisan(context).sm.copyWith(
+                          color: Colors.white54,
+                        ),
+                  ),
+                ),
+                Expanded(
+                  flex: 5,
+                  child: Text(waktuOperasi),
+                )
+              ],
+            ),
+            Text('data'),
+            Text('data'),
+            Text('data'),
+            Text('data'),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final lukis = useState<List<LatLng>>([]);
+    final jadualDiTitikA = useState<List<DateTime>?>([]);
 
     useEffect(() {
       Future<void> runAsync() async {
-        final daoPeta = DaoBerkaitanPemetaanPeta(lokalState.db);
+        final daoLaluan = DaoBerkaitanLaluan(lokalState.db);
 
-        lukis.value =
-            await daoPeta.lukisLaluanBerdasarkan(kodLaluan: kodLaluan) ?? [];
+        jadualDiTitikA.value = await daoLaluan.jadualKetibaanMengikut(
+          kodLaluan: kodLaluan,
+        );
       }
 
       runAsync();
@@ -28,28 +84,55 @@ class LaluanButiranUtama extends HookWidget {
       return null;
     }, []);
 
-    return Scaffold(
-      appBar: AppBar(title: FHeader(title: Text(kodLaluan))),
-      body: FlutterMap(
-        options: const MapOptions(
-          initialCenter: LatLng(2.98264014924525, 101.66798127599606),
-          initialZoom: 14,
-        ),
-        children: [
-          TileLayer(
-            urlTemplate:
-                'https://api.mapbox.com/styles/v1/zaiehilmi/cm16iq11801wl01pi1hvx0o0x/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiemFpZWhpbG1pIiwiYSI6ImNsazNkdTFreDAweHYzY3BlcHU2OXBlanAifQ.qSrZJUinzQt07T0zpEK_Pw',
-            userAgentPackageName: 'io.zaie.awan',
-            maxNativeZoom: 19,
-          ),
-          PolylineLayer(
-            polylines: [
-              Polyline(
-                points: lukis.value,
-                strokeWidth: 5,
+    return SafeArea(
+      top: false,
+      child: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            expandedHeight: 250,
+            floating: true,
+            pinned: true,
+            actions: [
+              FHeaderAction(
+                icon: FAssets.icons.bookmark,
+                onPress: () {
+                  rog.d('Tekan pada penanda');
+                },
               ),
+              const Gap(15),
+              FHeaderAction(
+                icon: FAssets.icons.map,
+                onPress: () {
+                  context.push('/laluan_butiranUtama/$kodLaluan/petaLaluan');
+                },
+              ),
+              const Gap(15),
             ],
-          )
+            flexibleSpace: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                // Tukar kandungan bergantung pada keadaan skrol
+                var top = constraints.biggest.height;
+                return FlexibleSpaceBar(
+                  background: _infoLaluan(
+                    context,
+                    mula: jadualDiTitikA.value?.firstOrNull,
+                    akhir: jadualDiTitikA.value?.lastOrNull,
+                  ),
+                  title: top < 120
+                      ? Text(kodLaluan)
+                      : null, // Tukar tajuk mengikut skrol
+                );
+              },
+            ),
+          ),
+          // TODO: nak letak senarai hentian yang dilalui bas dalam laluan ni
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) =>
+                  Text('${jadualDiTitikA.value?[index].format24Jam}'),
+              childCount: jadualDiTitikA.value?.length,
+            ),
+          ),
         ],
       ),
     );
