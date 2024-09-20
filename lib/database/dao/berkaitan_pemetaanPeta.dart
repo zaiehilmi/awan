@@ -38,7 +38,7 @@ class DaoBerkaitanPemetaanPeta extends DatabaseAccessor<PangkalanDataApl> {
       return null;
     }
 
-    final bentukPerjalanan = await bentukDao.dapatkanSemuaMengikut(
+    final bentukPerjalanan = await bentukDao.dapatkanSemuaMelalui(
       idBentuk: perjalananData[0].idBentuk!,
     );
     rog.d('saiz bentuk --> ${bentukPerjalanan?.length}');

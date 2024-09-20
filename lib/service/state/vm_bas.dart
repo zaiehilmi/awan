@@ -12,13 +12,13 @@ class BasVM extends JuneState {
 
     if (!laluanTelahWujud) {
       final daoLaluan = DaoBerkaitanLaluan(lokalState.db);
-      final senaraiKetibaan = await daoLaluan.jadualKetibaanMengikut(
+      final jadual = await daoLaluan.jadualKetibaanMengikut(
         kodLaluan: bas,
       );
 
       senaraiLaluan.add(JadualBas(
         kodLaluan: bas,
-        jadual: senaraiKetibaan ?? [],
+        jadual: jadual ?? [],
       ));
 
       basState.setState();

@@ -10,7 +10,7 @@ class BentukDao //
     extends DatabaseAccessor<PangkalanDataApl> with _$BentukDaoMixin {
   BentukDao(super.db);
 
-  Future<BentukEntitiData?> dapatkanMengikut({
+  Future<BentukEntitiData?> dapatkanMelalui({
     required String idBentuk,
     int susunan = 1,
   }) async {
@@ -24,7 +24,7 @@ class BentukDao //
     return await query.getSingleOrNull();
   }
 
-  Future<List<BentukEntitiData>?> dapatkanSemuaMengikut({
+  Future<List<BentukEntitiData>?> dapatkanSemuaMelalui({
     required String idBentuk,
   }) async {
     final query = select(bentukEntiti);
