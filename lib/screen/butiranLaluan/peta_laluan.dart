@@ -6,10 +6,11 @@ import 'package:latlong2/latlong.dart';
 import '../../database/dao/berkaitan_pemetaanPeta.dart';
 import '../../service/state/vm_lokal.dart';
 
+@Deprecated('Sila gunakan pakej dari mapbox untuk mengurangkan kadar bayaran')
 class Peta extends HookWidget {
-  String kodLaluan = '';
+  final String kodLaluan;
 
-  Peta({super.key, required this.kodLaluan});
+  const Peta({super.key, required this.kodLaluan});
 
   @override
   Widget build(BuildContext context) {

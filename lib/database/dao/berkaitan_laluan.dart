@@ -2,6 +2,7 @@ import 'package:awan/database/dao/entiti/kalendar.dart';
 import 'package:awan/database/dao/entiti/laluan_bas.dart';
 import 'package:awan/database/dao/entiti/perjalanan.dart';
 import 'package:awan/database/dao/entiti/waktu_berhenti.dart';
+import 'package:awan/util/extension/dateTime.dart';
 import 'package:drift/drift.dart';
 
 import '../../util/roggle.dart';
@@ -17,6 +18,7 @@ class DaoBerkaitanLaluan extends DatabaseAccessor<PangkalanDataApl> {
   /// tersebut
   Future<List<DateTime>?> jadualKetibaanMengikut({
     required String kodLaluan,
+    int susunanHentian = 1,
   }) async {
     final laluanBasDao = LaluanBasDao(db);
     final perjalananDao = PerjalananDao(db);
@@ -49,12 +51,13 @@ class DaoBerkaitanLaluan extends DatabaseAccessor<PangkalanDataApl> {
     }
 
     for (var p in perjalananData) {
-      final masaKetibaan = await waktuBerhentiDao.dapatkanMelalui(
+      final dataWaktuBerhenti = await waktuBerhentiDao.dapatkanMelalui(
         idPerjalanan: p.idPerjalanan,
+        susunanBerhenti: 1,
       );
 
-      if (masaKetibaan?.ketibaan != null) {
-        senaraiWaktuBerhenti.add(masaKetibaan!.ketibaan!);
+      if (dataWaktuBerhenti?.ketibaan != null) {
+        senaraiWaktuBerhenti.add(dataWaktuBerhenti!.ketibaan!);
       }
     }
 
@@ -86,5 +89,68 @@ class DaoBerkaitanLaluan extends DatabaseAccessor<PangkalanDataApl> {
 
     rog.d('Saiz semua laluan: ${memetakan.length}');
     return memetakan;
+  }
+
+  Future<
+      ({
+        String? petunjukLaluan,
+        String? waktuMulaOperasi,
+        String? waktuTamatOperasi,
+        List<WaktuBerhentiEntitiData>? senaraiHentian,
+      })> infoLaluanMengikut({
+    required String kodLaluan,
+  }) async {
+    final laluanDao = LaluanBasDao(db);
+    final perjalananDao = PerjalananDao(db);
+    final waktuBerhentiDao = WaktuBerhentiDao(db);
+
+    List<WaktuBerhentiEntitiData> dataListWaktuBerhenti = [];
+
+    final laluan = await laluanDao.dapatkanMelalui(kodLaluan: kodLaluan);
+
+    if (laluan == null) {
+      rog.i('Tidak menemui data untuk kod laluan: $kodLaluan');
+
+      return (
+        petunjukLaluan: null,
+        waktuMulaOperasi: null,
+        waktuTamatOperasi: null,
+        senaraiHentian: null
+      );
+    }
+
+    final perjalanan =
+        await perjalananDao.dapatkanSemuaMelalui(idLaluan: laluan.idLaluan);
+
+    if (perjalanan == null) {
+      rog.i('Tidak menemui data untuk kod laluan: $kodLaluan');
+      return (
+        petunjukLaluan: null,
+        waktuMulaOperasi: null,
+        waktuTamatOperasi: null,
+        senaraiHentian: null
+      );
+    }
+
+    for (var i = 0; i < perjalanan.length; i++) {
+      final dataWaktuBerhenti = await waktuBerhentiDao.dapatkanMelalui(
+        idPerjalanan: perjalanan[i].idPerjalanan,
+        susunanBerhenti: (i + 1),
+      );
+
+      if (dataWaktuBerhenti != null) {
+        dataListWaktuBerhenti.add(dataWaktuBerhenti);
+      }
+    }
+    dataListWaktuBerhenti.removeLast();
+
+    final jadual = await jadualKetibaanMengikut(kodLaluan: kodLaluan);
+
+    return (
+      petunjukLaluan: perjalanan.first.petunjukPerjalanan,
+      waktuMulaOperasi: jadual?.first.format24Jam,
+      waktuTamatOperasi: jadual?.last.format24Jam,
+      senaraiHentian: dataListWaktuBerhenti,
+    );
   }
 }

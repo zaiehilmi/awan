@@ -1,13 +1,14 @@
 import 'package:awan/database/dao/berkaitan_laluan.dart';
 import 'package:awan/service/state/vm_lokal.dart';
 import 'package:awan/theme/tema.dart';
-import 'package:awan/util/extension/dateTime.dart';
 import 'package:awan/util/roggle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:forui/forui.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+
+import '../../database/pangkalan_data.dart';
 
 class LaluanButiranUtama extends HookWidget {
   final String kodLaluan;
@@ -16,10 +17,11 @@ class LaluanButiranUtama extends HookWidget {
 
   Widget _infoLaluan(
     BuildContext context, {
-    DateTime? mula,
-    DateTime? akhir,
+    String? petunjukLaluan,
+    String? mula,
+    String? akhir,
   }) {
-    final waktuOperasi = '${mula?.format24Jam} - ${akhir?.format24Jam}';
+    final waktuOperasi = '$mula - $akhir';
 
     return SafeArea(
       child: Padding(
@@ -37,7 +39,7 @@ class LaluanButiranUtama extends HookWidget {
                     fontWeight: FontWeight.w600,
                   ),
             ),
-            Text('MRT Taman Equine - Taman Pinggiran Putra'),
+            Text(petunjukLaluan!),
             const Gap(10),
             Row(
               children: [
@@ -46,13 +48,25 @@ class LaluanButiranUtama extends HookWidget {
                   child: Text(
                     'Waktu Operasi',
                     style: gayaTulisan(context).sm.copyWith(
-                          color: Colors.white54,
+                          color: Colors.white60,
                         ),
                   ),
                 ),
                 Expanded(
                   flex: 5,
-                  child: Text(waktuOperasi),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(waktuOperasi),
+                      const Gap(5),
+                      Text(
+                        '(masa dari titik mula)',
+                        style: gayaTulisan(context)
+                            .xs
+                            .copyWith(fontSize: 9, color: Colors.white54),
+                      ),
+                    ],
+                  ),
                 )
               ],
             ),
@@ -64,15 +78,20 @@ class LaluanButiranUtama extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final jadualDiTitikA = useState<List<DateTime>?>([]);
+    final senaraiHentian = useState<List<WaktuBerhentiEntitiData>>([]);
+    final waktuMulaOperasi = useState('');
+    final waktuTamatOperasi = useState('');
+    final petunjukLaluan = useState('');
 
     useEffect(() {
       Future<void> runAsync() async {
         final daoLaluan = DaoBerkaitanLaluan(lokalState.db);
 
-        jadualDiTitikA.value = await daoLaluan.jadualKetibaanMengikut(
-          kodLaluan: kodLaluan,
-        );
+        final temp = await daoLaluan.infoLaluanMengikut(kodLaluan: kodLaluan);
+        petunjukLaluan.value = temp.petunjukLaluan ?? '';
+        waktuMulaOperasi.value = temp.waktuMulaOperasi ?? '06:00';
+        waktuTamatOperasi.value = temp.waktuTamatOperasi ?? '23:30';
+        senaraiHentian.value = temp.senaraiHentian ?? [];
       }
 
       runAsync();
@@ -111,8 +130,9 @@ class LaluanButiranUtama extends HookWidget {
                 return FlexibleSpaceBar(
                   background: _infoLaluan(
                     context,
-                    mula: jadualDiTitikA.value?.firstOrNull,
-                    akhir: jadualDiTitikA.value?.lastOrNull,
+                    petunjukLaluan: petunjukLaluan.value,
+                    mula: waktuMulaOperasi.value,
+                    akhir: waktuTamatOperasi.value,
                   ),
                   title: top < 120
                       ? Text(kodLaluan)
@@ -124,9 +144,10 @@ class LaluanButiranUtama extends HookWidget {
           // TODO: nak letak senarai hentian yang dilalui bas dalam laluan ni
           SliverList(
             delegate: SliverChildBuilderDelegate(
-              (context, index) =>
-                  Text('${jadualDiTitikA.value?[index].format24Jam}'),
-              childCount: jadualDiTitikA.value?.length,
+              (context, index) => FCard(
+                subtitle: Text(senaraiHentian.value[index].petunjuk ?? '🐤'),
+              ),
+              childCount: senaraiHentian.value.length,
             ),
           ),
         ],
