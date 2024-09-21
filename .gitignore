@@ -44,3 +44,6 @@ app.*.map.json
 
 # Drift SQLite3
 *.g.dart
+
+# Environment secret
+*.env

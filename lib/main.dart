@@ -1,6 +1,8 @@
 import 'package:awan/router.dart';
+import 'package:awan/service/mapbox.dart';
 import 'package:awan/service/tetapan.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:forui/forui.dart';
 import 'package:orange/orange.dart';
@@ -14,6 +16,9 @@ void main() async {
 
   // memulakan storan lokal
   await Orange.init();
+  await dotenv.load();
+
+  await memulakanMapbox();
 
   runApp(const Awan());
 }
