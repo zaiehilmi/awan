@@ -83,7 +83,7 @@ class Tanah extends HookWidget {
                 onChange: (index) {
                   bottomNavIndex.value = index;
                 },
-                items: [
+                children: [
                   FBottomNavigationBarItem(
                     icon: FAssets.icons.home,
                     label: 'Utama',

@@ -1,7 +1,6 @@
 import 'package:awan/database/dao/berkaitan_laluan.dart';
 import 'package:awan/service/state/vm_lokal.dart';
 import 'package:awan/theme/tema.dart';
-import 'package:awan/util/roggle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:forui/forui.dart';
@@ -108,20 +107,27 @@ class LaluanButiranUtama extends HookWidget {
             floating: true,
             pinned: true,
             actions: [
-              FHeaderAction(
-                icon: FAssets.icons.bookmark,
-                onPress: () {
-                  rog.d('Tekan pada penanda');
-                },
+              IconButton(
+                icon: FAssets.icons.bookmark(
+                  colorFilter: const ColorFilter.mode(
+                    Colors.white,
+                    BlendMode.srcIn,
+                  ),
+                ),
+                onPressed: () {},
               ),
-              const Gap(15),
-              FHeaderAction(
-                icon: FAssets.icons.map,
-                onPress: () {
+              IconButton(
+                icon: FAssets.icons.map(
+                  colorFilter: const ColorFilter.mode(
+                    Colors.white,
+                    BlendMode.srcIn,
+                  ),
+                ),
+                color: Colors.white,
+                onPressed: () {
                   context.push('/laluan_butiranUtama/$kodLaluan/petaLaluan');
                 },
               ),
-              const Gap(15),
             ],
             flexibleSpace: LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {

@@ -181,7 +181,7 @@ Row _jamAkanTiba(
         style: gayaTulisanJamAkanTiba,
       ),
       if (akanTiba2 != null) ...[
-        const FDivider(vertical: true),
+        const FDivider(axis: Axis.vertical),
         Text(
           akanTiba2,
           style: gayaTulisanJamAkanTiba,
