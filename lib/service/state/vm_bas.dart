@@ -7,6 +7,7 @@ import '../../database/dao/berkaitan_laluan.dart';
 class BasVM extends JuneState {
   List<JadualBas> senaraiLaluan = [];
 
+  @Deprecated('akan gunakan dao.')
   Future<void> masaKetibaan({required String bas}) async {
     bool laluanTelahWujud = senaraiLaluan.any((item) => item.kodLaluan == bas);
 

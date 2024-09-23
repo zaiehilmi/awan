@@ -3,5 +3,5 @@ enum AsetLokal {
 
   final String nama;
 
-  const AsetLokal(this.nama)
+  const AsetLokal(this.nama);
 }

@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:awan/screen/peta_utama.dart';
 import 'package:awan/service/state/vm_lokal.dart';
 import 'package:awan/theme/tema.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,10 +10,7 @@ import 'package:june/june.dart';
 
 import '../model/constant/jenis_perkhidmatan.dart';
 import '../service/api/gtfs-statik.dart';
-import 'gelintar.dart';
-import 'kira_tambang.dart';
-import 'tetapan.dart';
-import 'utama.dart';
+import 'index.dart';
 
 class Tanah extends HookWidget {
   Tanah({super.key});
@@ -36,7 +32,6 @@ class Tanah extends HookWidget {
   ];
 
   final contents = [
-    const SkrinUtama(),
     PetaUtama(),
     const SkrinKiraTambang(),
     const SkrinGelintar(),
@@ -91,10 +86,6 @@ class Tanah extends HookWidget {
                   bottomNavIndex.value = index;
                 },
                 children: [
-                  FBottomNavigationBarItem(
-                    icon: FAssets.icons.home,
-                    label: 'Utama (Lapuk)',
-                  ),
                   FBottomNavigationBarItem(
                     icon: FAssets.icons.mapPinned,
                     label: 'Utama',
