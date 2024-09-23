@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:awan/screen/peta_utama.dart';
 import 'package:awan/service/state/vm_lokal.dart';
 import 'package:awan/theme/tema.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,6 +21,7 @@ class Tanah extends HookWidget {
 
   final headers = [
     const FHeader(title: Text('🌥️')),
+    Container(),
     const FHeader(title: Text('Kalkulator Tambang')),
     const FHeader(title: Text('Gelintar')),
     FHeader(
@@ -35,6 +37,7 @@ class Tanah extends HookWidget {
 
   final contents = [
     const SkrinUtama(),
+    PetaUtama(),
     const SkrinKiraTambang(),
     const SkrinGelintar(),
     SkrinTetapan(),
@@ -42,6 +45,7 @@ class Tanah extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tema = context.theme;
     final bottomNavIndex = useState(0);
 
     useEffect(() {
@@ -76,6 +80,9 @@ class Tanah extends HookWidget {
               ),
             )
           : FScaffold(
+              style: tema.scaffoldStyle.copyWith(
+                contentPadding: const EdgeInsets.only(left: 0, right: 0),
+              ),
               header: headers[bottomNavIndex.value],
               content: contents[bottomNavIndex.value],
               footer: FBottomNavigationBar(
@@ -86,6 +93,10 @@ class Tanah extends HookWidget {
                 children: [
                   FBottomNavigationBarItem(
                     icon: FAssets.icons.home,
+                    label: 'Utama (Lapuk)',
+                  ),
+                  FBottomNavigationBarItem(
+                    icon: FAssets.icons.mapPinned,
                     label: 'Utama',
                   ),
                   FBottomNavigationBarItem(
