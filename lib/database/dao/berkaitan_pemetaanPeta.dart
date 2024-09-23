@@ -1,4 +1,5 @@
 import 'package:awan/database/dao/entiti/bentuk.dart';
+import 'package:awan/database/dao/entiti/hentian.dart';
 import 'package:awan/database/dao/entiti/laluan_bas.dart';
 import 'package:awan/database/pangkalan_data.dart';
 import 'package:drift/drift.dart';
@@ -45,5 +46,12 @@ class DaoBerkaitanPemetaanPeta extends DatabaseAccessor<PangkalanDataApl> {
     bentukPerjalanan?.forEach((b) => senaraiLatLng.add(LatLng(b.lat, b.lon)));
 
     return senaraiLatLng;
+  }
+
+  Future<List<HentianEntitiData>> dapatkanKoordinatSemuaHentian() async {
+    final hentianDao = HentianDao(db);
+    final semuaHentian = await hentianDao.dapatkanSemua();
+    rog.d('saiz hentian --> ${semuaHentian.length}');
+    return await semuaHentian;
   }
 }

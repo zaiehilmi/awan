@@ -1,3 +1,5 @@
+import 'package:flutter/services.dart';
+
 /// String dalam bahasa Melayu ialah rentetan
 extension Rentetan on String {
   String get txt => '$this.txt';
@@ -19,4 +21,11 @@ extension Rentetan on String {
   String? get jadiNullJikaTiadaData => this != '' ? this : null;
 
   String get hurufPertamaBesar => this[0].toUpperCase() + substring(1);
+
+  Future<Uint8List> get keUint8List async {
+    final byteData = await rootBundle.load(this);
+    final imageBytes = byteData.buffer.asUint8List();
+
+    return imageBytes;
+  }
 }
