@@ -26,7 +26,7 @@ final pergi = GoRouter(
             name: 'petaLaluan',
             builder: (context, state) {
               final kodLaluan = state.pathParameters['kodLaluan'];
-              return Peta(kodLaluan: kodLaluan ?? 'T542');
+              return PetaLaluan(kodLaluan: kodLaluan ?? 'T542');
             })
       ],
     ),

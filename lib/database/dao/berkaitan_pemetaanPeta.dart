@@ -3,7 +3,7 @@ import 'package:awan/database/dao/entiti/hentian.dart';
 import 'package:awan/database/dao/entiti/laluan_bas.dart';
 import 'package:awan/database/pangkalan_data.dart';
 import 'package:drift/drift.dart';
-import 'package:latlong2/latlong.dart';
+import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 
 import '../../util/roggle.dart';
 import 'entiti/perjalanan.dart';
@@ -11,14 +11,14 @@ import 'entiti/perjalanan.dart';
 class DaoBerkaitanPemetaanPeta extends DatabaseAccessor<PangkalanDataApl> {
   DaoBerkaitanPemetaanPeta(super.db);
 
-  Future<List<LatLng>?> lukisLaluanBerdasarkan({
+  Future<List<Position>?> lukisLaluanBerdasarkan({
     required String kodLaluan,
   }) async {
     final laluanBasDao = LaluanBasDao(db);
     final perjalananDao = PerjalananDao(db);
     final bentukDao = BentukDao(db);
 
-    List<LatLng> senaraiLatLng = [];
+    List<Position> senaraiLatLng = [];
 
     final laluanData = await laluanBasDao.dapatkanMelalui(
       kodLaluan: kodLaluan,
@@ -43,7 +43,7 @@ class DaoBerkaitanPemetaanPeta extends DatabaseAccessor<PangkalanDataApl> {
       idBentuk: perjalananData[0].idBentuk!,
     );
     rog.d('saiz bentuk --> ${bentukPerjalanan?.length}');
-    bentukPerjalanan?.forEach((b) => senaraiLatLng.add(LatLng(b.lat, b.lon)));
+    bentukPerjalanan?.forEach((b) => senaraiLatLng.add(Position(b.lon, b.lat)));
 
     return senaraiLatLng;
   }

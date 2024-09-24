@@ -16,8 +16,7 @@ class Tanah extends HookWidget {
   Tanah({super.key});
 
   final headers = [
-    const FHeader(title: Text('🌥️')),
-    Container(),
+    null,
     const FHeader(title: Text('Kalkulator Tambang')),
     const FHeader(title: Text('Gelintar')),
     FHeader(

@@ -96,7 +96,7 @@ class PetaUtama extends HookWidget {
           minChildSize: 0.1,
           maxChildSize: 0.8,
           snap: true,
-          snapSizes: const [.3, .5, .8],
+          snapSizes: const [.5],
           builder: (BuildContext context, ScrollController scrollController) {
             return !basInitialized.value
                 ? const Center(
