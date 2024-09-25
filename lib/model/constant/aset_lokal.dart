@@ -1,5 +1,5 @@
 enum AsetLokal {
-  ikonHentianBas('assets/imej/bus-station-24px.png');
+  ikonHentianBas('assets/imej/bus-stop.png');
 
   final String nama;
 
