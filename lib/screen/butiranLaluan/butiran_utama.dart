@@ -6,6 +6,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:forui/forui.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:timelines_plus/timelines_plus.dart';
 
 import '../../database/pangkalan_data.dart';
 
@@ -147,13 +148,34 @@ class LaluanButiranUtama extends HookWidget {
               },
             ),
           ),
-          // TODO: nak letak senarai hentian yang dilalui bas dalam laluan ni
           SliverList(
             delegate: SliverChildBuilderDelegate(
-              (context, index) => FCard(
-                subtitle: Text(senaraiHentian.value[index].petunjuk ?? '🐤'),
-              ),
               childCount: senaraiHentian.value.length,
+              (context, index) => TimelineTile(
+                nodeAlign: TimelineNodeAlign.start,
+                contents: SizedBox(
+                  height: 70,
+                  child: Center(
+                    child: Row(
+                      children: [
+                        const Gap(20),
+                        Text(senaraiHentian.value[index].petunjuk ?? '🐤')
+                      ],
+                    ),
+                  ),
+                ),
+                node: TimelineNode(
+                  indicator: DotIndicator(
+                    color: skemaWarna(context).primary,
+                  ),
+                  startConnector: SolidLineConnector(
+                    color: skemaWarna(context).primaryForeground,
+                  ),
+                  endConnector: SolidLineConnector(
+                    color: skemaWarna(context).primaryForeground,
+                  ),
+                ),
+              ),
             ),
           ),
         ],
