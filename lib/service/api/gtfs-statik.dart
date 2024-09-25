@@ -122,6 +122,7 @@ Future<void> _bilaKemaskiniTersedia({required String etag}) async {
   basState.senaraiLaluan = [];
   basState.setState();
 
-  // delete table
   ZonBahayaDao(lokalState.db).kosongkanSemua();
+
+  await _muatTurunBaharu(etag: etag);
 }
