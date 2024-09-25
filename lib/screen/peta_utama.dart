@@ -2,6 +2,7 @@ import 'package:awan/database/dao/berkaitan_pemetaanPeta.dart';
 import 'package:awan/model/constant/aset_lokal.dart';
 import 'package:awan/service/state/vm_lokal.dart';
 import 'package:awan/util/extension/string.dart';
+import 'package:awan/util/roggle.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -66,6 +67,9 @@ class PetaUtama extends HookWidget {
           options.add(
             PointAnnotationOptions(
               image: ikonHentianBas,
+              iconSize: 1.2,
+              textField: e.namaHentian,
+              textSize: 0,
               geometry: Point(
                 coordinates: Position(e.lon as num, e.lat as num),
               ),
@@ -74,6 +78,7 @@ class PetaUtama extends HookWidget {
         });
 
         manager.createMulti(options);
+        manager.addOnPointAnnotationClickListener(PointTapListener());
       });
     }
 
@@ -162,5 +167,12 @@ class PetaUtama extends HookWidget {
         ),
       ],
     );
+  }
+}
+
+class PointTapListener extends OnPointAnnotationClickListener {
+  @override
+  void onPointAnnotationClick(PointAnnotation annotation) {
+    rog.i('Tekan pada ${annotation.textField}');
   }
 }
