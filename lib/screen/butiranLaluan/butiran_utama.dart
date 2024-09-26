@@ -40,15 +40,15 @@ class LaluanButiranUtama extends HookWidget {
                   ),
             ),
             Text(petunjukLaluan!),
-            const Gap(10),
+            const Gap(15),
             Row(
               children: [
                 Expanded(
                   flex: 3,
                   child: Text(
                     'Waktu Operasi',
-                    style: gayaTulisan(context).sm.copyWith(
-                          color: Colors.white60,
+                    style: gayaTulisan(context).xs.copyWith(
+                          color: Colors.white70,
                         ),
                   ),
                 ),
@@ -57,7 +57,10 @@ class LaluanButiranUtama extends HookWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text(waktuOperasi),
+                      Text(
+                        waktuOperasi,
+                        style: gayaTulisan(context).xs,
+                      ),
                       const Gap(5),
                       Text(
                         '(masa dari titik mula)',
@@ -148,31 +151,43 @@ class LaluanButiranUtama extends HookWidget {
               },
             ),
           ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              childCount: senaraiHentian.value.length,
-              (context, index) => TimelineTile(
-                nodeAlign: TimelineNodeAlign.start,
-                contents: SizedBox(
-                  height: 70,
+          SliverToBoxAdapter(
+            child: FixedTimeline.tileBuilder(
+              theme: TimelineThemeData(
+                nodePosition: 0,
+                direction: Axis.vertical,
+                nodeItemOverlap: true,
+                connectorTheme: ConnectorThemeData(
+                  thickness: 15,
+                  color: skemaWarna(context).border,
+                  space: 50,
+                ),
+                indicatorTheme: IndicatorThemeData(
+                  color: skemaWarna(context).primary,
+                ),
+              ),
+              builder: TimelineTileBuilder.connected(
+                itemCount: senaraiHentian.value.length,
+                indicatorBuilder: (_, index) => const OutlinedDotIndicator(
+                  backgroundColor: Color(0xfff5d4d7),
+                  borderWidth: 4,
+                ),
+                connectorBuilder: (_, index, connectorType) =>
+                    const SolidLineConnector(),
+                contentsBuilder: (context, index) => Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
                   child: Center(
                     child: Row(
                       children: [
-                        const Gap(20),
-                        Text(senaraiHentian.value[index].petunjuk ?? '🐤')
+                        Flexible(
+                          child: Text(
+                            senaraiHentian.value[index].petunjuk ?? '🐤',
+                            style: gayaTulisan(context).sm,
+                            maxLines: 2,
+                          ),
+                        ),
                       ],
                     ),
-                  ),
-                ),
-                node: TimelineNode(
-                  indicator: DotIndicator(
-                    color: skemaWarna(context).primary,
-                  ),
-                  startConnector: SolidLineConnector(
-                    color: skemaWarna(context).primaryForeground,
-                  ),
-                  endConnector: SolidLineConnector(
-                    color: skemaWarna(context).primaryForeground,
                   ),
                 ),
               ),
