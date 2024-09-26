@@ -56,8 +56,8 @@ Future<void> apiGtfsStatik(
     } else if (semakPerubahan && kemaskiniTersedia) {
       rog.i('Terdapat perubahan pada fail, memuat turun versi baru...');
 
-      _bilaKemaskiniTersedia(etag: etagBaru);
       await dio.download(laluanApi, kedudukanFail);
+      await _bilaKemaskiniTersedia(etag: etagBaru);
     } else if (kemaskiniTersedia == false) {
       rog.i('Tiada perubahan, fail tidak perlu dimuat turun');
     } else {
