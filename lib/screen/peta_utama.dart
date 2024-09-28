@@ -67,7 +67,7 @@ class PetaUtama extends HookWidget {
           options.add(
             PointAnnotationOptions(
               image: ikonHentianBas,
-              iconSize: 1.2,
+              iconSize: 1.4,
               textField: e.namaHentian,
               textSize: 0,
               geometry: Point(
