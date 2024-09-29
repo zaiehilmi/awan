@@ -75,7 +75,9 @@ class Tanah extends HookWidget {
             )
           : FScaffold(
               style: tema.scaffoldStyle.copyWith(
-                contentPadding: const EdgeInsets.only(left: 0, right: 0),
+                contentPadding: (bottomNavIndex.value == 0)
+                    ? const EdgeInsets.only(left: 0, right: 0)
+                    : const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
               ),
               header: headers[bottomNavIndex.value],
               content: contents[bottomNavIndex.value],
