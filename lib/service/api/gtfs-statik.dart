@@ -31,6 +31,7 @@ Future<void> apiGtfsStatik(
       ? 'out/${perkhidmatan.nama}.zip'
       : '${Tetapan.filePath}/out/${perkhidmatan.nama}.zip';
   final laluanApi = '?category=${perkhidmatan.nama}';
+  bool muatTurunBerjaya = false;
 
   lokalState.memuatkanDb(kemajuan: 0.1);
 
@@ -42,22 +43,18 @@ Future<void> apiGtfsStatik(
     final response = await dio.head(laluanApi);
     final etagBaru = response.headers.value('etag').toString();
     final kemaskiniTersedia = Orange.getString('etag') != etagBaru;
-    final failBelumWujud = !File(kedudukanFail).existsSync();
+
     rog.d(response.requestOptions.uri);
 
     lokalState.memuatkanDb(kemajuan: 0.2);
 
-    if (failBelumWujud) {
-      // Fail belum wujud, terus muat turun
-      rog.i('Memuat turun fail dari ${response.requestOptions.path}');
-
-      await dio.download(laluanApi, kedudukanFail);
-      await _muatTurunBaharu(etag: etagBaru);
-    } else if (semakPerubahan && kemaskiniTersedia) {
+    if (semakPerubahan && kemaskiniTersedia) {
       rog.i('Terdapat perubahan pada fail, memuat turun versi baru...');
 
       await dio.download(laluanApi, kedudukanFail);
       await _bilaKemaskiniTersedia(etag: etagBaru);
+
+      muatTurunBerjaya = true;
     } else if (kemaskiniTersedia == false) {
       rog.i('Tiada perubahan, fail tidak perlu dimuat turun');
     } else {
@@ -65,7 +62,6 @@ Future<void> apiGtfsStatik(
     }
 
     rog.i('Selesai memuat API');
-
     lokalState.memuatkanDb(kemajuan: 1);
   } on DioException {
     rog.e('Masalah di Dio');
@@ -73,6 +69,10 @@ Future<void> apiGtfsStatik(
     rog.t('Ralat kritikal', error: e);
   } finally {
     dio.close();
+
+    if (muatTurunBerjaya) {
+      await _buangFailCache(kedudukanFail);
+    }
   }
 }
 
@@ -125,4 +125,19 @@ Future<void> _bilaKemaskiniTersedia({required String etag}) async {
   ZonBahayaDao(lokalState.db).kosongkanSemua();
 
   await _muatTurunBaharu(etag: etag);
+}
+
+Future<void> _buangFailCache(String filePath) async {
+  final file = File(filePath);
+
+  if (await file.exists()) {
+    try {
+      await file.delete();
+      rog.i('Fail dihapuskan: $filePath');
+    } catch (e) {
+      rog.e('Gagal untuk memadam fail: $e');
+    }
+  } else {
+    rog.e('Fail tidak wujud: $filePath');
+  }
 }
