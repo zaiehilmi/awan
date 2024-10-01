@@ -106,10 +106,10 @@ packages:
     dependency: "direct dev"
     description:
       name: build_runner
-      sha256: dd09dd4e2b078992f42aac7f1a622f01882a8492fef08486b27ddde929c19f04
+      sha256: "028819cfb90051c6b5440c7e574d1896f8037e3c96cf17aaeb054c9311cfbf4d"
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.12"
+    version: "2.4.13"
   build_runner_core:
     dependency: transitive
     description:
@@ -250,10 +250,10 @@ packages:
     dependency: "direct main"
     description:
       name: drift
-      sha256: "5b561ec76fff260e1e0593a29ca0d058a140a4b4dfb11dcc0c3813820cd20200"
+      sha256: d6ff1ec6a0f3fa097dda6b776cf601f1f3d88b53b287288e09c1306f394fb1b3
       url: "https://pub.dev"
     source: hosted
-    version: "2.20.2"
+    version: "2.20.3"
   drift_dev:
     dependency: "direct dev"
     description:
@@ -374,10 +374,10 @@ packages:
     dependency: "direct main"
     description:
       name: forui
-      sha256: "2caaca9ff33908ac5b3e70f1b5021721caa4433ab38053e26f6511036d111401"
+      sha256: c126f589a91402434764fe9abce6625aa19219e21560ddc890c14cd2ca6b68d5
       url: "https://pub.dev"
     source: hosted
-    version: "0.5.0"
+    version: "0.5.1"
   forui_assets:
     dependency: transitive
     description:
@@ -422,10 +422,10 @@ packages:
     dependency: "direct main"
     description:
       name: go_router
-      sha256: "2ddb88e9ad56ae15ee144ed10e33886777eb5ca2509a914850a5faa7b52ff459"
+      sha256: "5cf5fdcf853b0629deb35891c7af643be900c3dcaed7489009f9e7dbcfe55ab6"
       url: "https://pub.dev"
     source: hosted
-    version: "14.2.7"
+    version: "14.2.8"
   google_fonts:
     dependency: transitive
     description:
@@ -470,10 +470,10 @@ packages:
     dependency: transitive
     description:
       name: idb_shim
-      sha256: acf4ae9bd777cfdc7bb2e25ebdf4bf4fb61a491a373960ac2da7f36ff16669cd
+      sha256: "9e7ec816139bfafb69ae4b3668ad29dbd43c53428d6eb31f9332d42bd4fa7205"
       url: "https://pub.dev"
     source: hosted
-    version: "2.6.1"
+    version: "2.6.1+7"
   intl:
     dependency: "direct main"
     description:
@@ -606,10 +606,10 @@ packages:
     dependency: transitive
     description:
       name: mime
-      sha256: "801fd0b26f14a4a58ccb09d5892c3fbdeff209594300a542492cf13fba9d247a"
+      sha256: "41a20518f0cb1256669420fdba0cd90d21561e560ac240f26ef8322e45bb7ed6"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.6"
+    version: "2.0.0"
   nitrogen_flutter_svg:
     dependency: transitive
     description:
@@ -782,18 +782,18 @@ packages:
     dependency: transitive
     description:
       name: sembast
-      sha256: cae6c2b606226c94d9a6a9951b7b0632194077a9d7ea5e8e2300c88d8f19a823
+      sha256: "934a7b99297fb4f0b6e69fb1465286737b3b47b1a5149bf8dfc85667fbbdd21d"
       url: "https://pub.dev"
     source: hosted
-    version: "3.7.4"
+    version: "3.7.4+3"
   sembast_web:
     dependency: transitive
     description:
       name: sembast_web
-      sha256: "6b15b49b2a86214130c25c7bdfb3a76eb0f4dc5e43016087f03870bd0bf9ba07"
+      sha256: "02ce895fa728b48d36fe28ba165abdfa3d67033e6924316f0dcc9c871f81a538"
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.0+2"
+    version: "2.4.0+4"
   shelf:
     dependency: transitive
     description:
@@ -907,10 +907,10 @@ packages:
     dependency: transitive
     description:
       name: synchronized
-      sha256: "51b08572b9f091f8c3eb4d9d4be253f196ff0075d5ec9b10a884026d5b55d7bc"
+      sha256: "69fe30f3a8b04a0be0c15ae6490fc859a78ef4c43ae2dd5e8a623d45bfcf9225"
       url: "https://pub.dev"
     source: hosted
-    version: "3.3.0+2"
+    version: "3.3.0+3"
   term_glyph:
     dependency: transitive
     description:
@@ -1027,10 +1027,10 @@ packages:
     dependency: transitive
     description:
       name: web
-      sha256: d43c1d6b787bf0afad444700ae7f4db8827f701bc61c255ac8d328c6f4d52062
+      sha256: cd3543bd5798f6ad290ea73d210f423502e71900302dde696f8bff84bf89a1cb
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.0"
+    version: "1.1.0"
   web_socket:
     dependency: transitive
     description:
