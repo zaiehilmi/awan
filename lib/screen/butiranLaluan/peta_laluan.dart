@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:awan/util/extension/string.dart';
 import 'package:awan/util/titik_tengah_koordinat.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -13,22 +16,6 @@ class PetaLaluan extends HookWidget {
 
   PetaLaluan({super.key, required this.kodLaluan});
 
-  void _ciptaPolyline(ValueNotifier<List<Position>> lukis) {
-    petaMapbox?.annotations
-        .createPolylineAnnotationManager()
-        .then((manager) async {
-      polyManager = manager;
-      final lineString = PolylineAnnotationOptions(
-        geometry: LineString(coordinates: lukis.value),
-      );
-
-      polyManager?.createMulti([lineString]);
-
-      polyManager
-          ?.addOnPolylineAnnotationClickListener(AnnotationClickListener());
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final lukis = useState<List<Position>>([]);
@@ -39,6 +26,54 @@ class PetaLaluan extends HookWidget {
       ),
       zoom: 13.5,
     );
+
+    Future<void> ciptaPolyline(ValueNotifier<List<Position>> lukis) async {
+      if (petaMapbox == null) return;
+
+      polyManager =
+          await petaMapbox?.annotations.createPolylineAnnotationManager();
+      polyManager
+          ?.addOnPolylineAnnotationClickListener(AnnotationClickListener());
+
+      // Menukar koordinat kepada format GeoJSON yang betul
+      List<List<double>> geometry = lukis.value
+          .map((position) => [position.lng as double, position.lat as double])
+          .toList();
+
+      // Tambah sumber GeoJson ke dalam style peta
+      await petaMapbox?.style.addSource(GeoJsonSource(
+        id: 'route-source',
+        data: jsonEncode({
+          "type": "Feature",
+          "geometry": {
+            "type": "LineString",
+            "coordinates": geometry,
+          }
+        }),
+        lineMetrics: true, // Penting untuk gradient
+      ));
+
+      // Tambah lapisan dengan kesan gradient ke atas polyline
+      await petaMapbox?.style.addLayer(LineLayer(
+        id: 'route-layer',
+        sourceId: 'route-source',
+        lineCap: LineCap.ROUND,
+        lineJoin: LineJoin.ROUND,
+        lineBlur: 1.0,
+        lineWidth: 7.5,
+        lineOpacity: 0.5,
+        minZoom: 13,
+        lineGradientExpression: [
+          "interpolate",
+          ["linear"],
+          ["line-progress"],
+          0.0,
+          '#0000FF'.keRgbGeoJson,
+          1.0,
+          '#FF0000'.keRgbGeoJson,
+        ],
+      ));
+    }
 
     useEffect(() {
       Future<void> runAsync() async {
@@ -56,7 +91,7 @@ class PetaLaluan extends HookWidget {
     void onMapCreated(MapboxMap mapbox) async {
       petaMapbox = mapbox;
 
-      _ciptaPolyline(lukis);
+      await ciptaPolyline(lukis);
     }
 
     if (lukis.value.isEmpty) {

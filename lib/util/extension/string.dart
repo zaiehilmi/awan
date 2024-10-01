@@ -28,4 +28,29 @@ extension Rentetan on String {
 
     return imageBytes;
   }
+
+  List<dynamic> get keRgbGeoJson {
+    // Buang '#' jika ada pada awal string hex
+    String hex = replaceAll('#', '');
+
+    // Tukar hex kepada integer
+    if (hex.length == 6) {
+      return [
+        'rgb',
+        int.parse(hex.substring(0, 2), radix: 16), // Merah (R)
+        int.parse(hex.substring(2, 4), radix: 16), // Hijau (G)
+        int.parse(hex.substring(4, 6), radix: 16), // Biru (B)
+      ];
+    } else if (hex.length == 3) {
+      // Format hex 3 digit, contohnya '#FFF'
+      return [
+        'rgb',
+        int.parse(hex[0] * 2, radix: 16), // Merah (R)
+        int.parse(hex[1] * 2, radix: 16), // Hijau (G)
+        int.parse(hex[2] * 2, radix: 16), // Biru (B)
+      ];
+    } else {
+      throw const FormatException("Kod hex tidak sah");
+    }
+  }
 }
