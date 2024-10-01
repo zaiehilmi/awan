@@ -19,7 +19,7 @@ import '../service/state/vm_bas.dart';
 import '../widget/paparan_ringkas.dart';
 
 class PetaUtama extends HookWidget {
-  late final MapboxMap? petaMapbox;
+  MapboxMap? petaMapbox;
 
   final kamera = CameraOptions(
     center: Point(
