@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:awan/util/extension/string.dart';
+import 'package:awan/util/roggle.dart';
 import 'package:awan/util/titik_tengah_koordinat.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -39,7 +40,7 @@ class PetaLaluan extends HookWidget {
       List<List<double>> geometry = lukis.value
           .map((position) => [position.lng as double, position.lat as double])
           .toList();
-
+      rog.d(lukis.value.length);
       // Tambah sumber GeoJson ke dalam style peta
       await petaMapbox?.style.addSource(GeoJsonSource(
         id: 'route-source',
@@ -61,16 +62,16 @@ class PetaLaluan extends HookWidget {
         lineJoin: LineJoin.ROUND,
         lineBlur: 1.0,
         lineWidth: 7.5,
-        lineOpacity: 0.5,
+        lineOpacity: 0.6,
         minZoom: 13,
         lineGradientExpression: [
           "interpolate",
           ["linear"],
           ["line-progress"],
           0.0,
-          '#0000FF'.keRgbGeoJson,
+          "#FD6585".keRgbGeoJson,
           1.0,
-          '#FF0000'.keRgbGeoJson,
+          '#0D25B9'.keRgbGeoJson
         ],
       ));
     }
