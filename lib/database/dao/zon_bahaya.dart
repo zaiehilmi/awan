@@ -15,6 +15,7 @@ class ZonBahayaDao extends DatabaseAccessor<PangkalanDataApl> {
     await delete(db.bentukEntiti).go();
     await delete(db.frekuensiEntiti).go();
     await delete(db.hentianEntiti).go();
+    await delete(db.kalendarEntiti).go();
     await delete(db.laluanEntiti).go();
     await delete(db.perjalananEntiti).go();
     await delete(db.waktuBerhentiEntiti).go();
