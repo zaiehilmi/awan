@@ -4,18 +4,25 @@ import 'package:awan/util/extension/string.dart';
 import 'package:awan/util/roggle.dart';
 import 'package:awan/util/titik_tengah_koordinat.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 
 import '../../database/dao/berkaitan_pemetaanPeta.dart';
 import '../../service/state/vm_lokal.dart';
 
-class PetaLaluan extends HookWidget {
+class PetaLaluan extends HookWidget
+    implements OnPolylineAnnotationClickListener {
   final String kodLaluan;
   MapboxMap? petaMapbox;
   PolylineAnnotationManager? polyManager;
 
   PetaLaluan({super.key, required this.kodLaluan});
+
+  @override
+  void onPolylineAnnotationClick(PolylineAnnotation annotation) {
+    rog.d("onAnnotationClick, id: ${annotation.id}");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,14 +40,13 @@ class PetaLaluan extends HookWidget {
 
       polyManager =
           await petaMapbox?.annotations.createPolylineAnnotationManager();
-      polyManager
-          ?.addOnPolylineAnnotationClickListener(AnnotationClickListener());
+      polyManager?.addOnPolylineAnnotationClickListener(this);
 
       // Menukar koordinat kepada format GeoJSON yang betul
       List<List<double>> geometry = lukis.value
           .map((position) => [position.lng as double, position.lat as double])
           .toList();
-      rog.d(lukis.value.length);
+
       // Tambah sumber GeoJson ke dalam style peta
       await petaMapbox?.style.addSource(GeoJsonSource(
         id: 'route-source',
@@ -63,6 +69,7 @@ class PetaLaluan extends HookWidget {
         lineBlur: 1.0,
         lineWidth: 7.5,
         lineOpacity: 0.6,
+        lineColor: Colors.white70.value,
         minZoom: 13,
         lineGradientExpression: [
           "interpolate",
@@ -105,12 +112,5 @@ class PetaLaluan extends HookWidget {
       cameraOptions: kamera,
       onMapCreated: onMapCreated,
     );
-  }
-}
-
-class AnnotationClickListener extends OnPolylineAnnotationClickListener {
-  @override
-  void onPolylineAnnotationClick(PolylineAnnotation annotation) {
-    print("onAnnotationClick, id: ${annotation.id}");
   }
 }
