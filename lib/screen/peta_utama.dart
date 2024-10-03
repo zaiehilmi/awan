@@ -12,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:forui/forui.dart';
 import 'package:gap/gap.dart';
-import 'package:go_router/go_router.dart';
 import 'package:june/state_manager/src/simple/state.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 
@@ -168,7 +167,6 @@ class PetaUtama extends HookWidget {
                               FButton(
                                 label: const Text('Button'),
                                 onPress: () async {
-                                  context.go('/petaMapbox');
                                   final lala =
                                       DaoBerkaitanPemetaanPeta(lokalState.db);
                                   final data1 =
