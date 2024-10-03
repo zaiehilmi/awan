@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:awan/util/extension/string.dart';
 import 'package:awan/util/roggle.dart';
@@ -13,7 +14,9 @@ import '../../service/state/vm_lokal.dart';
 class PetaLaluan extends HookWidget
     implements OnPolylineAnnotationClickListener {
   final String kodLaluan;
+
   late MapboxMap petaMapbox;
+
   PolylineAnnotationManager? polyManager;
 
   PetaLaluan({super.key, required this.kodLaluan});
@@ -83,6 +86,21 @@ class PetaLaluan extends HookWidget
       await petaMapbox.style.addSource(sumberGeojson);
     }
 
+    void setingOrnament() {
+      final kompas = CompassSettings(
+        position: OrnamentPosition.TOP_RIGHT,
+        marginTop: MediaQuery.paddingOf(context).top + 30,
+        marginRight: 15,
+      );
+
+      final skala = ScaleBarSettings(enabled: false);
+
+      if (Platform.isAndroid) {
+        petaMapbox.compass.updateSettings(kompas);
+      }
+      petaMapbox.scaleBar.updateSettings(skala);
+    }
+
     useEffect(() {
       Future<void> runAsync() async {
         final daoPeta = DaoBerkaitanPemetaanPeta(lokalState.db);
@@ -99,6 +117,7 @@ class PetaLaluan extends HookWidget
     void onMapCreated(MapboxMap mapbox) async {
       petaMapbox = mapbox;
 
+      setingOrnament();
       await ciptaPolyline(lukis);
     }
 

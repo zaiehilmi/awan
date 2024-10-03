@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:awan/database/dao/berkaitan_pemetaanPeta.dart';
 import 'package:awan/model/constant/aset_lokal.dart';
 import 'package:awan/service/state/vm_lokal.dart';
@@ -53,8 +55,25 @@ class PetaUtama extends HookWidget {
       return null;
     }, [basInitialized.value]); // depend on basInitialized value to run once
 
+    void setingOrnament() {
+      final kompas = CompassSettings(
+        position: OrnamentPosition.TOP_RIGHT,
+        marginTop: MediaQuery.paddingOf(context).top + 30,
+        marginRight: 15,
+      );
+
+      final skala = ScaleBarSettings(enabled: false);
+
+      if (Platform.isAndroid) {
+        petaMapbox?.compass.updateSettings(kompas);
+      }
+      petaMapbox?.scaleBar.updateSettings(skala);
+    }
+
     void onMapCreated(MapboxMap mapbox) async {
       petaMapbox = mapbox;
+
+      setingOrnament();
 
       final ikonHentianBas = await AsetLokal.ikonHentianBas.nama.keUint8List;
 
