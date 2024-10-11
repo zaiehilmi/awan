@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:awan/service/state/vm_lokal.dart';
 import 'package:awan/theme/tema.dart';
+import 'package:awan/util/posisi_semasa.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:forui/forui.dart';
@@ -43,8 +44,16 @@ class Tanah extends HookWidget {
     final bottomNavIndex = useState(0);
 
     useEffect(() {
-      Future<void> runAsync() async =>
-          await apiGtfsStatik(JenisPerkhidmatan.basPerantaraMrt);
+      Future<void> runAsync() async {
+        await apiGtfsStatik(JenisPerkhidmatan.basPerantaraMrt);
+        final posisi = await dapatkanPosisiSemasa(context);
+
+        if (posisi == null) {
+          await tunjukDialogKepastian(context);
+        } else {
+          print('Posisi semasa: ${posisi.latitude}, ${posisi.longitude}');
+        }
+      }
 
       lokalState.memuatkanDb(kemajuan: 0.05);
 
