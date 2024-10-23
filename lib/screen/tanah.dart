@@ -23,7 +23,7 @@ class Tanah extends HookWidget {
       title: const Text('Tetapan'),
       actions: [
         FHeaderAction(
-          icon: FAssets.icons.ellipsis,
+          icon: FIcon(FAssets.icons.ellipsis),
           onPress: () {},
         ),
       ],
@@ -88,20 +88,20 @@ class Tanah extends HookWidget {
                 },
                 children: [
                   FBottomNavigationBarItem(
-                    icon: FAssets.icons.mapPinned,
-                    label: 'Utama',
+                    icon: FIcon(FAssets.icons.mapPinned),
+                    label: const Text('Utama'),
                   ),
                   FBottomNavigationBarItem(
-                    icon: FAssets.icons.calculator,
-                    label: 'Kira Tambang',
+                    icon: FIcon(FAssets.icons.calculator),
+                    label: const Text('Kira Tambang'),
                   ),
                   FBottomNavigationBarItem(
-                    icon: FAssets.icons.search,
-                    label: 'Gelintar',
+                    icon: FIcon(FAssets.icons.search),
+                    label: const Text('Gelintar'),
                   ),
                   FBottomNavigationBarItem(
-                    icon: FAssets.icons.settings,
-                    label: 'Tetapan',
+                    icon: FIcon(FAssets.icons.settings),
+                    label: const Text('Tetapan'),
                   ),
                 ],
               ),

@@ -43,7 +43,7 @@ class SkrinGelintar extends HookWidget {
             width: 1,
           )),
         ),
-        content: FCardContentStyle.inherit(
+        contentStyle: FCardContentStyle.inherit(
           colorScheme: skemaWarna(context),
           typography: gayaTulisan(context),
         ),
