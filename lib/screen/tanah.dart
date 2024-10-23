@@ -50,8 +50,6 @@ class Tanah extends HookWidget {
 
         if (posisi == null) {
           await tunjukDialogKepastian(context);
-        } else {
-          print('Posisi semasa: ${posisi.latitude}, ${posisi.longitude}');
         }
       }
 

@@ -17,6 +17,7 @@ import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 
 import '../database/pangkalan_data.dart';
 import '../service/state/vm_bas.dart';
+import '../util/posisi_semasa.dart';
 import '../widget/paparan_ringkas.dart';
 
 class PetaUtama extends HookWidget {
@@ -28,6 +29,24 @@ class PetaUtama extends HookWidget {
     ),
     zoom: 14,
   );
+
+  Future<void> onPressGoToCurrentLocation(BuildContext context) async {
+    final posisi = await dapatkanPosisiSemasa(context);
+    rog.d('posisi semasa: ${posisi?.latitude},${posisi?.longitude}');
+
+    final options = CameraOptions(
+      center: Point(
+        coordinates: Position(
+          posisi?.longitude as num,
+          posisi?.latitude as num,
+        ),
+      ),
+      zoom: 14,
+    );
+
+    final animasi = MapAnimationOptions(duration: 200, startDelay: 0);
+    petaMapbox?.easeTo(options, animasi);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -108,18 +127,29 @@ class PetaUtama extends HookWidget {
 
     return Stack(
       children: [
-        // Map Widget
         MapWidget(
           cameraOptions: kamera,
           onMapCreated: onMapCreated,
         ),
-        // Draggable Scrollable Sheet
+        Positioned(
+          right: 0,
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: SafeArea(
+              child: FButton.icon(
+                style: FButtonStyle.secondary,
+                onPress: () => onPressGoToCurrentLocation(context),
+                child: FIcon(FAssets.icons.locate),
+              ),
+            ),
+          ),
+        ),
         DraggableScrollableSheet(
           initialChildSize: 0.3,
           minChildSize: 0.1,
           maxChildSize: 0.8,
           snap: true,
-          snapSizes: const [.5],
+          snapSizes: const [.3, .5],
           builder: (BuildContext context, ScrollController scrollController) {
             return !basInitialized.value
                 ? const Center(
