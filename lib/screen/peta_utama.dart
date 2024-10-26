@@ -23,14 +23,32 @@ import '../widget/paparan_ringkas.dart';
 class PetaUtama extends HookWidget {
   MapboxMap? petaMapbox;
 
+  // MARK: Komponen UI 🖼️
+
   final kamera = CameraOptions(
     center: Point(
       coordinates: Position(101.66798127599606, 2.98264014924525),
     ),
-    zoom: 14,
   );
 
-  Future<void> onPressGoToCurrentLocation(BuildContext context) async {
+  void setingOrnament(BuildContext context) {
+    final kompas = CompassSettings(
+      position: OrnamentPosition.TOP_RIGHT,
+      marginTop: MediaQuery.paddingOf(context).top + 30,
+      marginRight: 15,
+    );
+
+    final skala = ScaleBarSettings(enabled: false);
+
+    if (Platform.isAndroid) {
+      petaMapbox?.compass.updateSettings(kompas);
+    }
+    petaMapbox?.scaleBar.updateSettings(skala);
+  }
+
+  // MARK: Interaksi 🫵
+
+  Future<void> pergiKePosisiSemasa(BuildContext context) async {
     final posisi = await dapatkanPosisiSemasa(context);
     rog.d('posisi semasa: ${posisi?.latitude},${posisi?.longitude}');
 
@@ -48,10 +66,14 @@ class PetaUtama extends HookWidget {
     petaMapbox?.easeTo(options, animasi);
   }
 
+  // MARK: Kitar hayat luaran ⭕️
+
   @override
   Widget build(BuildContext context) {
     final senaraiHentian = useState<List<HentianEntitiData>>([]);
     final basInitialized = useState(false);
+
+    // MARK: Kitar hayat dalaman 🔴
 
     useEffect(() {
       Future<void> initBasState() async {
@@ -66,6 +88,8 @@ class PetaUtama extends HookWidget {
         basInitialized.value = true;
       }
 
+      pergiKePosisiSemasa(context);
+
       if (!basInitialized.value) {
         initBasState();
       }
@@ -73,25 +97,10 @@ class PetaUtama extends HookWidget {
       return null;
     }, [basInitialized.value]); // depend on basInitialized value to run once
 
-    void setingOrnament() {
-      final kompas = CompassSettings(
-        position: OrnamentPosition.TOP_RIGHT,
-        marginTop: MediaQuery.paddingOf(context).top + 30,
-        marginRight: 15,
-      );
-
-      final skala = ScaleBarSettings(enabled: false);
-
-      if (Platform.isAndroid) {
-        petaMapbox?.compass.updateSettings(kompas);
-      }
-      petaMapbox?.scaleBar.updateSettings(skala);
-    }
-
     void onMapCreated(MapboxMap mapbox) async {
       petaMapbox = mapbox;
 
-      setingOrnament();
+      setingOrnament(context);
 
       final ikonHentianBas = await AsetLokal.ikonHentianBas.nama.keUint8List;
 
@@ -115,9 +124,11 @@ class PetaUtama extends HookWidget {
         });
 
         manager.createMulti(options);
-        manager.addOnPointAnnotationClickListener(PointTapListener());
+        manager.addOnPointAnnotationClickListener(DelegasiPetaUtama());
       });
     }
+
+    // MARK: Mula membina 📦
 
     if (senaraiHentian.value.isEmpty) {
       return const Center(
@@ -134,12 +145,18 @@ class PetaUtama extends HookWidget {
         Positioned(
           right: 0,
           child: Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.only(
+              right: 19,
+              top: 90,
+            ),
             child: SafeArea(
               child: FButton.icon(
                 style: FButtonStyle.secondary,
-                onPress: () => onPressGoToCurrentLocation(context),
-                child: FIcon(FAssets.icons.locate),
+                onPress: () => pergiKePosisiSemasa(context),
+                child: FIcon(
+                  FAssets.icons.locate,
+                  size: 25,
+                ),
               ),
             ),
           ),
@@ -160,10 +177,27 @@ class PetaUtama extends HookWidget {
                     builder: (vm) => SingleChildScrollView(
                       controller: scrollController,
                       child: Container(
-                        color: Colors.black54,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.black,
+                        ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                FButton.icon(
+                                  style: FButtonStyle.ghost,
+                                  onPress: () => pergiKePosisiSemasa(context),
+                                  child: FIcon(
+                                    FAssets.icons.locate,
+                                    size: 25,
+                                  ),
+                                ),
+                                const Gap(10),
+                              ],
+                            ),
                             PaparanRingkas(
                               kodLaluan: 'T542',
                               namaLaluan: 'Rumah',
@@ -171,9 +205,7 @@ class PetaUtama extends HookWidget {
                                   .where((e) => e.kodLaluan == 'T542')
                                   .first
                                   .jadual,
-                              onTap: () async {
-                                print('lala');
-                              },
+                              onTap: () async {},
                             ),
                             const Gap(10),
                             PaparanRingkas(
@@ -202,7 +234,6 @@ class PetaUtama extends HookWidget {
                                   final data1 =
                                       await lala.lukisLaluanBerdasarkan(
                                           kodLaluan: 't542');
-                                  print(data1?.length);
                                 },
                               ),
                           ],
@@ -217,7 +248,7 @@ class PetaUtama extends HookWidget {
   }
 }
 
-class PointTapListener extends OnPointAnnotationClickListener {
+class DelegasiPetaUtama extends OnPointAnnotationClickListener {
   @override
   void onPointAnnotationClick(PointAnnotation annotation) {
     rog.i('Tekan pada ${annotation.textField}');

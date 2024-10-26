@@ -16,6 +16,8 @@ import 'index.dart';
 class Tanah extends HookWidget {
   Tanah({super.key});
 
+  // MARK: Komponen UI 🖼
+
   final headers = [
     null,
     const FHeader(title: Text('Kalkulator Tambang')),
@@ -38,10 +40,18 @@ class Tanah extends HookWidget {
     SkrinTetapan(),
   ];
 
+  // MARK: Interaksi 🫵
+
+  // MARK: Logik 🎨
+
+  // MARK: Kitar hayat luaran ⭕
+
   @override
   Widget build(BuildContext context) {
     final tema = context.theme;
     final bottomNavIndex = useState(0);
+
+    // MARK: Kitar hayat dalaman 🔴
 
     useEffect(() {
       Future<void> runAsync() async {
@@ -59,6 +69,8 @@ class Tanah extends HookWidget {
 
       return null;
     }, []);
+
+    // MARK: Mula membina 📦
 
     return JuneBuilder(
       () => LokalVM(),
@@ -90,9 +102,7 @@ class Tanah extends HookWidget {
               content: contents[bottomNavIndex.value],
               footer: FBottomNavigationBar(
                 index: bottomNavIndex.value,
-                onChange: (index) {
-                  bottomNavIndex.value = index;
-                },
+                onChange: (index) => bottomNavIndex.value = index,
                 children: [
                   FBottomNavigationBarItem(
                     icon: FIcon(FAssets.icons.mapPinned),

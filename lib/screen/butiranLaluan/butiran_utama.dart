@@ -15,6 +15,8 @@ class LaluanButiranUtama extends HookWidget {
 
   const LaluanButiranUtama({super.key, required this.kodLaluan});
 
+  // MARK: Komponen UI 🖼
+
   Widget _infoLaluan(
     BuildContext context, {
     String? petunjukLaluan,
@@ -79,12 +81,25 @@ class LaluanButiranUtama extends HookWidget {
     );
   }
 
+  // MARK: Interaksi 🫵
+  void onTapLihatLaluan(BuildContext context) {
+    context.push('/laluan_butiranUtama/$kodLaluan/petaLaluan');
+  }
+
+  void onTapPenanda() {}
+
+  // MARK: Logik 🎨
+
+  // MARK: Kitar hayat luaran ⭕
+
   @override
   Widget build(BuildContext context) {
     final senaraiHentian = useState<List<WaktuBerhentiEntitiData>>([]);
     final waktuMulaOperasi = useState('');
     final waktuTamatOperasi = useState('');
     final petunjukLaluan = useState('');
+
+    // MARK: Kitar hayat dalaman 🔴
 
     useEffect(() {
       Future<void> runAsync() async {
@@ -102,6 +117,8 @@ class LaluanButiranUtama extends HookWidget {
       return null;
     }, []);
 
+    // MARK: Mula membina 📦
+
     return SafeArea(
       top: false,
       child: CustomScrollView(
@@ -118,7 +135,7 @@ class LaluanButiranUtama extends HookWidget {
                     BlendMode.srcIn,
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () => onTapPenanda(),
               ),
               IconButton(
                 icon: FAssets.icons.map(
@@ -128,9 +145,7 @@ class LaluanButiranUtama extends HookWidget {
                   ),
                 ),
                 color: Colors.white,
-                onPressed: () {
-                  context.push('/laluan_butiranUtama/$kodLaluan/petaLaluan');
-                },
+                onPressed: () => onTapLihatLaluan(context),
               ),
             ],
             flexibleSpace: LayoutBuilder(
