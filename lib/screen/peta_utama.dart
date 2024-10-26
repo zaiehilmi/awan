@@ -20,8 +20,9 @@ import '../service/state/vm_bas.dart';
 import '../util/posisi_semasa.dart';
 import '../widget/paparan_ringkas.dart';
 
-class PetaUtama extends HookWidget {
+class PetaUtama extends HookWidget implements OnPointAnnotationClickListener {
   MapboxMap? petaMapbox;
+  PointAnnotationManager? pointManager;
 
   // MARK: Komponen UI 🖼️
 
@@ -32,18 +33,76 @@ class PetaUtama extends HookWidget {
   );
 
   void setingOrnament(BuildContext context) {
-    final kompas = CompassSettings(
-      position: OrnamentPosition.TOP_RIGHT,
-      marginTop: MediaQuery.paddingOf(context).top + 30,
-      marginRight: 15,
-    );
-
-    final skala = ScaleBarSettings(enabled: false);
-
+    // kompas
     if (Platform.isAndroid) {
-      petaMapbox?.compass.updateSettings(kompas);
+      petaMapbox?.compass.updateSettings(CompassSettings(
+        position: OrnamentPosition.TOP_RIGHT,
+        marginTop: MediaQuery.paddingOf(context).top + 30,
+        marginRight: 15,
+      ));
     }
-    petaMapbox?.scaleBar.updateSettings(skala);
+
+    // skala
+    petaMapbox?.scaleBar.updateSettings(ScaleBarSettings(
+      enabled: false,
+    ));
+
+    // atribut
+    petaMapbox?.attribution.updateSettings(AttributionSettings(
+      enabled: false,
+    ));
+
+    // logo
+    petaMapbox?.logo.updateSettings(LogoSettings(
+      position: OrnamentPosition.TOP_LEFT,
+      marginLeft: 10,
+    ));
+  }
+
+  Future<void> ciptaPoint(List<HentianEntitiData> senarai) async {
+    final ikonHentianBas = await AsetLokal.ikonHentianBas.nama.keUint8List;
+
+    petaMapbox?.annotations
+        .createPointAnnotationManager()
+        .then((manager) async {
+      var options = <PointAnnotationOptions>[];
+
+      senarai.forEachIndexed((i, e) {
+        options.add(
+          PointAnnotationOptions(
+            image: ikonHentianBas,
+            iconSize: 1.4,
+            textField: e.namaHentian,
+            textSize: 0,
+            geometry: Point(
+              coordinates: Position(e.lon as num, e.lat as num),
+            ),
+          ),
+        );
+      });
+
+      manager.createMulti(options);
+      manager.addOnPointAnnotationClickListener(this);
+    });
+  }
+
+  Widget _lajurAtasDraggableSheet(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FButton.icon(
+            style: FButtonStyle.ghost,
+            onPress: () => pergiKePosisiSemasa(context),
+            child: FIcon(
+              FAssets.icons.locate,
+              size: 25,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   // MARK: Interaksi 🫵
@@ -67,6 +126,11 @@ class PetaUtama extends HookWidget {
   }
 
   // MARK: Kitar hayat luaran ⭕️
+
+  @override
+  void onPointAnnotationClick(PointAnnotation annotation) {
+    rog.i('Tekan pada ${annotation.textField}');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,31 +165,7 @@ class PetaUtama extends HookWidget {
       petaMapbox = mapbox;
 
       setingOrnament(context);
-
-      final ikonHentianBas = await AsetLokal.ikonHentianBas.nama.keUint8List;
-
-      petaMapbox?.annotations
-          .createPointAnnotationManager()
-          .then((manager) async {
-        var options = <PointAnnotationOptions>[];
-
-        senaraiHentian.value.forEachIndexed((i, e) {
-          options.add(
-            PointAnnotationOptions(
-              image: ikonHentianBas,
-              iconSize: 1.4,
-              textField: e.namaHentian,
-              textSize: 0,
-              geometry: Point(
-                coordinates: Position(e.lon as num, e.lat as num),
-              ),
-            ),
-          );
-        });
-
-        manager.createMulti(options);
-        manager.addOnPointAnnotationClickListener(DelegasiPetaUtama());
-      });
+      ciptaPoint(senaraiHentian.value);
     }
 
     // MARK: Mula membina 📦
@@ -141,25 +181,6 @@ class PetaUtama extends HookWidget {
         MapWidget(
           cameraOptions: kamera,
           onMapCreated: onMapCreated,
-        ),
-        Positioned(
-          right: 0,
-          child: Padding(
-            padding: const EdgeInsets.only(
-              right: 19,
-              top: 90,
-            ),
-            child: SafeArea(
-              child: FButton.icon(
-                style: FButtonStyle.secondary,
-                onPress: () => pergiKePosisiSemasa(context),
-                child: FIcon(
-                  FAssets.icons.locate,
-                  size: 25,
-                ),
-              ),
-            ),
-          ),
         ),
         DraggableScrollableSheet(
           initialChildSize: 0.3,
@@ -184,20 +205,7 @@ class PetaUtama extends HookWidget {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                FButton.icon(
-                                  style: FButtonStyle.ghost,
-                                  onPress: () => pergiKePosisiSemasa(context),
-                                  child: FIcon(
-                                    FAssets.icons.locate,
-                                    size: 25,
-                                  ),
-                                ),
-                                const Gap(10),
-                              ],
-                            ),
+                            _lajurAtasDraggableSheet(context),
                             PaparanRingkas(
                               kodLaluan: 'T542',
                               namaLaluan: 'Rumah',
@@ -245,12 +253,5 @@ class PetaUtama extends HookWidget {
         ),
       ],
     );
-  }
-}
-
-class DelegasiPetaUtama extends OnPointAnnotationClickListener {
-  @override
-  void onPointAnnotationClick(PointAnnotation annotation) {
-    rog.i('Tekan pada ${annotation.textField}');
   }
 }

@@ -29,13 +29,13 @@ class PetaLaluan extends HookWidget
         zoom: 13.5,
       );
 
-  Future<void> ciptaPolyline(ValueNotifier<List<Position>> lukis) async {
+  Future<void> ciptaPolyline(List<Position> lukis) async {
     polyManager =
         await petaMapbox.annotations.createPolylineAnnotationManager();
     polyManager?.addOnPolylineAnnotationClickListener(this);
 
     // Menukar koordinat kepada format GeoJSON yang betul
-    List<List<double>> geometry = lukis.value
+    List<List<double>> geometry = lukis
         .map((position) => [position.lng as double, position.lat as double])
         .toList();
 
@@ -127,7 +127,7 @@ class PetaLaluan extends HookWidget
       petaMapbox = mapbox;
 
       setingOrnament(context);
-      await ciptaPolyline(lukis);
+      await ciptaPolyline(lukis.value);
     }
 
     // MARK: Mula membina 📦
