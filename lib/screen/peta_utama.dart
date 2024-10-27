@@ -86,25 +86,6 @@ class PetaUtama extends HookWidget implements OnPointAnnotationClickListener {
     });
   }
 
-  Widget _lajurAtasDraggableSheet(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          FButton.icon(
-            style: FButtonStyle.ghost,
-            onPress: () => pergiKePosisiSemasa(context),
-            child: FIcon(
-              FAssets.icons.locate,
-              size: 25,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   // MARK: Interaksi 🫵
 
   Future<void> pergiKePosisiSemasa(BuildContext context) async {
@@ -136,6 +117,10 @@ class PetaUtama extends HookWidget implements OnPointAnnotationClickListener {
   Widget build(BuildContext context) {
     final senaraiHentian = useState<List<HentianEntitiData>>([]);
     final basInitialized = useState(false);
+    final widgetHeight = useState(.0);
+    final fabPosition = useState(.0);
+    final dragScrollSheetExtent = useState(.0);
+    final initialSheetChildSize = useState(.3);
 
     // MARK: Kitar hayat dalaman 🔴
 
@@ -153,6 +138,10 @@ class PetaUtama extends HookWidget implements OnPointAnnotationClickListener {
       }
 
       pergiKePosisiSemasa(context);
+
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        fabPosition.value = initialSheetChildSize.value * context.size!.height;
+      });
 
       if (!basInitialized.value) {
         initBasState();
@@ -182,74 +171,96 @@ class PetaUtama extends HookWidget implements OnPointAnnotationClickListener {
           cameraOptions: kamera,
           onMapCreated: onMapCreated,
         ),
-        DraggableScrollableSheet(
-          initialChildSize: 0.3,
-          minChildSize: 0.1,
-          maxChildSize: 0.8,
-          snap: true,
-          snapSizes: const [.3, .5],
-          builder: (BuildContext context, ScrollController scrollController) {
-            return !basInitialized.value
-                ? const Center(
-                    child: CupertinoActivityIndicator(),
-                  ) // Show loading while waiting
-                : JuneBuilder(
-                    () => BasVM(),
-                    builder: (vm) => SingleChildScrollView(
-                      controller: scrollController,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.black,
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            _lajurAtasDraggableSheet(context),
-                            PaparanRingkas(
-                              kodLaluan: 'T542',
-                              namaLaluan: 'Rumah',
-                              listJadual: vm.senaraiLaluan
-                                  .where((e) => e.kodLaluan == 'T542')
-                                  .first
-                                  .jadual,
-                              onTap: () async {},
-                            ),
-                            const Gap(10),
-                            PaparanRingkas(
-                              kodLaluan: 'T818',
-                              namaLaluan: 'Gi Office 😭',
-                              listJadual: vm.senaraiLaluan
-                                  .where((e) => e.kodLaluan == 'T818')
-                                  .first
-                                  .jadual,
-                            ),
-                            const Gap(10),
-                            PaparanRingkas(
-                              kodLaluan: 'T852',
-                              namaLaluan: 'Gi Office 😭',
-                              listJadual: vm.senaraiLaluan
-                                  .where((e) => e.kodLaluan == 'T852')
-                                  .first
-                                  .jadual,
-                            ),
-                            if (kDebugMode)
-                              FButton(
-                                label: const Text('Button'),
-                                onPress: () async {
-                                  final lala =
-                                      DaoBerkaitanPemetaanPeta(lokalState.db);
-                                  final data1 =
-                                      await lala.lukisLaluanBerdasarkan(
-                                          kodLaluan: 't542');
-                                },
+        Positioned(
+          right: 15,
+          bottom: fabPosition.value + 10,
+          child: FButton.icon(
+            style: FButtonStyle.secondary,
+            onPress: () => pergiKePosisiSemasa(context),
+            child: FIcon(
+              FAssets.icons.locate,
+              size: 28,
+            ),
+          ),
+        ),
+        NotificationListener<DraggableScrollableNotification>(
+          onNotification: (DraggableScrollableNotification notification) {
+            widgetHeight.value = context.size?.height ?? 0.0;
+            dragScrollSheetExtent.value = notification.extent;
+
+            fabPosition.value =
+                dragScrollSheetExtent.value * widgetHeight.value;
+
+            return true;
+          },
+          child: DraggableScrollableSheet(
+            initialChildSize: initialSheetChildSize.value,
+            minChildSize: .1,
+            maxChildSize: .8,
+            snap: true,
+            snapSizes: const [.3, .5],
+            builder: (BuildContext context, ScrollController scrollController) {
+              return !basInitialized.value
+                  ? const Center(
+                      child: CupertinoActivityIndicator(),
+                    ) // Show loading while waiting
+                  : JuneBuilder(
+                      () => BasVM(),
+                      builder: (vm) => SingleChildScrollView(
+                        controller: scrollController,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.black,
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              PaparanRingkas(
+                                kodLaluan: 'T542',
+                                namaLaluan: 'Rumah',
+                                listJadual: vm.senaraiLaluan
+                                    .where((e) => e.kodLaluan == 'T542')
+                                    .first
+                                    .jadual,
+                                onTap: () async {},
                               ),
-                          ],
+                              const Gap(10),
+                              PaparanRingkas(
+                                kodLaluan: 'T818',
+                                namaLaluan: 'Gi Office 😭',
+                                listJadual: vm.senaraiLaluan
+                                    .where((e) => e.kodLaluan == 'T818')
+                                    .first
+                                    .jadual,
+                              ),
+                              const Gap(10),
+                              PaparanRingkas(
+                                kodLaluan: 'T852',
+                                namaLaluan: 'Gi Office 😭',
+                                listJadual: vm.senaraiLaluan
+                                    .where((e) => e.kodLaluan == 'T852')
+                                    .first
+                                    .jadual,
+                              ),
+                              if (kDebugMode)
+                                FButton(
+                                  label: const Text('Button'),
+                                  onPress: () async {
+                                    final lala =
+                                        DaoBerkaitanPemetaanPeta(lokalState.db);
+                                    final data1 =
+                                        await lala.lukisLaluanBerdasarkan(
+                                            kodLaluan: 't542');
+                                  },
+                                ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  );
-          },
+                    );
+            },
+          ),
         ),
       ],
     );
