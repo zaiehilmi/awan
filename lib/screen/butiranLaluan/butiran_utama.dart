@@ -1,14 +1,17 @@
 import 'package:awan/database/dao/berkaitan_laluan.dart';
 import 'package:awan/service/state/vm_lokal.dart';
 import 'package:awan/theme/tema.dart';
+import 'package:awan/widget/paparan_ringkas.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:forui/forui.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:june/june.dart';
 import 'package:timelines_plus/timelines_plus.dart';
 
 import '../../database/pangkalan_data.dart';
+import '../../service/state/vm_bas.dart';
 
 class LaluanButiranUtama extends HookWidget {
   final String kodLaluan;
@@ -75,6 +78,16 @@ class LaluanButiranUtama extends HookWidget {
                 )
               ],
             ),
+            const Gap(15),
+            JuneBuilder(() => BasVM(),
+                builder: (vm) => PaparanRingkas(
+                      kodLaluan: kodLaluan,
+                      namaLaluan: "",
+                      listJadual: vm.senaraiLaluan
+                          .where((e) => e.kodLaluan == kodLaluan)
+                          .first
+                          .jadual,
+                    ))
           ],
         ),
       ),
@@ -110,6 +123,8 @@ class LaluanButiranUtama extends HookWidget {
         waktuMulaOperasi.value = temp.waktuMulaOperasi ?? '06:00';
         waktuTamatOperasi.value = temp.waktuTamatOperasi ?? '23:30';
         senaraiHentian.value = temp.senaraiHentian ?? [];
+
+        await basState.masaKetibaan(bas: kodLaluan);
       }
 
       runAsync();
@@ -124,7 +139,7 @@ class LaluanButiranUtama extends HookWidget {
       child: CustomScrollView(
         slivers: [
           SliverAppBar(
-            expandedHeight: 250,
+            expandedHeight: 320,
             floating: true,
             pinned: true,
             actions: [

@@ -32,7 +32,7 @@ class PetaUtama extends HookWidget implements OnPointAnnotationClickListener {
     ),
   );
 
-  void setingOrnament(BuildContext context) {
+  void _setingOrnament(BuildContext context) {
     // kompas
     if (Platform.isAndroid) {
       petaMapbox?.compass.updateSettings(CompassSettings(
@@ -59,7 +59,7 @@ class PetaUtama extends HookWidget implements OnPointAnnotationClickListener {
     ));
   }
 
-  Future<void> ciptaPoint(List<HentianEntitiData> senarai) async {
+  Future<void> ciptaPointPerhentianBas(List<HentianEntitiData> senarai) async {
     final ikonHentianBas = await AsetLokal.ikonHentianBas.nama.keUint8List;
 
     petaMapbox?.annotations
@@ -88,7 +88,7 @@ class PetaUtama extends HookWidget implements OnPointAnnotationClickListener {
 
   // MARK: Interaksi 🫵
 
-  Future<void> pergiKePosisiSemasa(BuildContext context) async {
+  Future<void> _pergiKePosisiSemasa(BuildContext context) async {
     final posisi = await dapatkanPosisiSemasa(context);
     rog.d('posisi semasa: ${posisi?.latitude},${posisi?.longitude}');
 
@@ -137,7 +137,7 @@ class PetaUtama extends HookWidget implements OnPointAnnotationClickListener {
         basInitialized.value = true;
       }
 
-      pergiKePosisiSemasa(context);
+      _pergiKePosisiSemasa(context);
 
       WidgetsBinding.instance.addPostFrameCallback((_) {
         fabPosition.value = initialSheetChildSize.value * context.size!.height;
@@ -153,8 +153,8 @@ class PetaUtama extends HookWidget implements OnPointAnnotationClickListener {
     void onMapCreated(MapboxMap mapbox) async {
       petaMapbox = mapbox;
 
-      setingOrnament(context);
-      ciptaPoint(senaraiHentian.value);
+      _setingOrnament(context);
+      ciptaPointPerhentianBas(senaraiHentian.value);
     }
 
     // MARK: Mula membina 📦
@@ -176,7 +176,7 @@ class PetaUtama extends HookWidget implements OnPointAnnotationClickListener {
           bottom: fabPosition.value + 10,
           child: FButton.icon(
             style: FButtonStyle.secondary,
-            onPress: () => pergiKePosisiSemasa(context),
+            onPress: () => _pergiKePosisiSemasa(context),
             child: FIcon(
               FAssets.icons.locate,
               size: 28,
@@ -216,6 +216,7 @@ class PetaUtama extends HookWidget implements OnPointAnnotationClickListener {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
+                              const Gap(30),
                               PaparanRingkas(
                                 kodLaluan: 'T542',
                                 namaLaluan: 'Rumah',
