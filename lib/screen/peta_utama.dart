@@ -1,10 +1,6 @@
 import 'dart:io';
 
-import 'package:awan/database/dao/berkaitan_pemetaanPeta.dart';
-import 'package:awan/model/constant/aset_lokal.dart';
-import 'package:awan/service/state/vm_lokal.dart';
 import 'package:awan/util/extension/string.dart';
-import 'package:awan/util/roggle.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -15,9 +11,13 @@ import 'package:gap/gap.dart';
 import 'package:june/state_manager/src/simple/state.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 
+import '../database/dao/berkaitan_pemetaanPeta.dart';
 import '../database/pangkalan_data.dart';
+import '../model/constant/aset_lokal.dart';
 import '../service/state/vm_bas.dart';
+import '../service/state/vm_lokal.dart';
 import '../util/posisi_semasa.dart';
+import '../util/roggle.dart';
 import '../widget/paparan_ringkas.dart';
 
 class PetaUtama extends HookWidget implements OnPointAnnotationClickListener {
@@ -195,10 +195,11 @@ class PetaUtama extends HookWidget implements OnPointAnnotationClickListener {
           },
           child: DraggableScrollableSheet(
             initialChildSize: initialSheetChildSize.value,
-            minChildSize: .1,
-            maxChildSize: .8,
             snap: true,
-            snapSizes: const [.3, .5],
+            minChildSize: .2,
+            maxChildSize: .8,
+            snapSizes: const [.5],
+            snapAnimationDuration: const Duration(milliseconds: 150),
             builder: (BuildContext context, ScrollController scrollController) {
               return !basInitialized.value
                   ? const Center(
