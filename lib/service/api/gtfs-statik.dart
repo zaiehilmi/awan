@@ -1,16 +1,16 @@
 import 'dart:io';
 
-import 'package:awan/database/dao/ingest_ke_pangkalanData.dart';
-import 'package:awan/database/dao/zon_bahaya.dart';
-import 'package:awan/model/constant/fail_txt.dart';
-import 'package:awan/service/state/vm_bas.dart';
-import 'package:awan/util/baca_csv.dart';
-import 'package:awan/util/roggle.dart';
 import 'package:dio/dio.dart';
-import 'package:orange/orange.dart';
 
+import '../../database/dao/ingest_ke_pangkalanData.dart';
+import '../../database/dao/zon_bahaya.dart';
+import '../../model/constant/fail_txt.dart';
 import '../../model/constant/jenis_perkhidmatan.dart';
 import '../../model/gtfs/index.dart';
+import '../../util/baca_csv.dart';
+import '../../util/roggle.dart';
+import '../orange.dart';
+import '../state/vm_bas.dart';
 import '../state/vm_lokal.dart';
 import '../tetapan.dart';
 
@@ -42,7 +42,7 @@ Future<void> apiGtfsStatik(
 
     final response = await dio.head(laluanApi);
     final etagBaru = response.headers.value('etag').toString();
-    final kemaskiniTersedia = Orange.getString('etag') != etagBaru;
+    final kemaskiniTersedia = Oren().get(KunciOren.etag) != etagBaru;
 
     rog.d(response.requestOptions.uri);
 
@@ -77,8 +77,7 @@ Future<void> apiGtfsStatik(
 }
 
 Future<void> _muatTurunBaharu({required String etag}) async {
-  Orange.setString('etag', etag);
-
+  Oren().set(KunciOren.etag, etag);
   lokalState.memuatkanDb(kemajuan: 0.3);
 
   await _prosesData<Agensi>(FailTxt.agensi, addSemuaAgensiDao);
@@ -117,7 +116,7 @@ Future<void> _prosesData<T>(
 }
 
 Future<void> _bilaKemaskiniTersedia({required String etag}) async {
-  Orange.setString('etag', etag);
+  Oren().set(KunciOren.etag, etag);
 
   basState.senaraiLaluan = [];
   basState.setState();
