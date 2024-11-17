@@ -356,10 +356,10 @@ packages:
     dependency: transitive
     description:
       name: flutter_svg
-      sha256: "1b7723a814d84fb65869ea7115cdb3ee7c3be5a27a755c1ec60e049f6b9fcbb2"
+      sha256: "578bd8c508144fdaffd4f77b8ef2d8c523602275cd697cc3db284dbd762ef4ce"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.11"
+    version: "2.0.14"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -374,18 +374,18 @@ packages:
     dependency: "direct main"
     description:
       name: forui
-      sha256: b3b4652aaf7e6e3f8165a234a05a53cd80e13b805ae78004b8e5ef35dd67e51c
+      sha256: "6d2488aa910da0f50b257acf6d8181b5878538f76c1cbee6d1d1525d302d41d9"
       url: "https://pub.dev"
     source: hosted
-    version: "0.6.1"
+    version: "0.7.0"
   forui_assets:
     dependency: transitive
     description:
       name: forui_assets
-      sha256: "48a036b329a855db9a18ebb3db98d5e9d1320479d747b48efd4e698ec7b1f178"
+      sha256: "17ade05cbb501faf95390f5c71f2eb1aea3e426afcc7aa1eb4289268a089da70"
       url: "https://pub.dev"
     source: hosted
-    version: "0.3.0"
+    version: "0.7.0"
   frontend_server_client:
     dependency: transitive
     description:
@@ -406,10 +406,10 @@ packages:
     dependency: "direct main"
     description:
       name: geolocator
-      sha256: "0ec58b731776bc43097fcf751f79681b6a8f6d3bc737c94779fe9f1ad73c1a81"
+      sha256: d2ec66329cab29cb297d51d96c067d457ca519dca8589665fa0b82ebacb7dbe4
       url: "https://pub.dev"
     source: hosted
-    version: "13.0.1"
+    version: "13.0.2"
   geolocator_android:
     dependency: transitive
     description:
@@ -422,10 +422,10 @@ packages:
     dependency: transitive
     description:
       name: geolocator_apple
-      sha256: bc2aca02423ad429cb0556121f56e60360a2b7d694c8570301d06ea0c00732fd
+      sha256: "6154ea2682563f69fc0125762ed7e91e7ed85d0b9776595653be33918e064807"
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.7"
+    version: "2.3.8+1"
   geolocator_platform_interface:
     dependency: transitive
     description:
@@ -470,10 +470,10 @@ packages:
     dependency: "direct main"
     description:
       name: go_router
-      sha256: "6f1b756f6e863259a99135ff3c95026c3cdca17d10ebef2bba2261a25ddc8bbc"
+      sha256: "8ae664a70174163b9f65ea68dd8673e29db8f9095de7b5cd00e167c621f4fef5"
       url: "https://pub.dev"
     source: hosted
-    version: "14.3.0"
+    version: "14.6.0"
   google_fonts:
     dependency: transitive
     description:
@@ -622,10 +622,10 @@ packages:
     dependency: "direct main"
     description:
       name: mapbox_maps_flutter
-      sha256: d8283667c78b92406caaef973600d85dcfe357addfd91573cdaa503683ed44b0
+      sha256: bbf4f7debdcf39ac93b4609fe73d210b7069d9da03744cb889036c79db7e1ea8
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.0"
+    version: "2.4.0"
   matcher:
     dependency: transitive
     description:
@@ -678,10 +678,10 @@ packages:
     dependency: "direct main"
     description:
       name: orange
-      sha256: "25272ab6b1ae715398b8c8047cbf02feb49d0778d555f0a4245287460da4720c"
+      sha256: "4c79a0bce354cf9d9fcdb439b9ac10448a72e8a35fb7edc38d43f9c7fb65d9cd"
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.8"
+    version: "1.2.10"
   package_config:
     dependency: transitive
     description:
@@ -878,10 +878,10 @@ packages:
     dependency: transitive
     description:
       name: sembast
-      sha256: dc42f8384edc2bc0c11c90856fa62630ad2a75d8a37c786e000517bd8298682d
+      sha256: "61f893e50fe2fa7d14529d275d45ac31871d7ad2ae3a745f9aa3afc0b447d75b"
       url: "https://pub.dev"
     source: hosted
-    version: "3.7.5"
+    version: "3.7.5+2"
   sembast_web:
     dependency: transitive
     description:
@@ -1091,10 +1091,10 @@ packages:
     dependency: transitive
     description:
       name: vector_graphics
-      sha256: "0b9149c6ddb013818075b072b9ddc1b89a5122fff1275d4648d297086b46c4f0"
+      sha256: "773c9522d66d523e1c7b25dfb95cc91c26a1e17b107039cfe147285e92de7878"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.12"
+    version: "1.1.14"
   vector_graphics_codec:
     dependency: transitive
     description:
@@ -1107,10 +1107,10 @@ packages:
     dependency: transitive
     description:
       name: vector_graphics_compiler
-      sha256: f3b9b6e4591c11394d4be4806c63e72d3a41778547b2c1e2a8a04fadcfd7d173
+      sha256: ab9ff38fc771e9ee1139320adbe3d18a60327370c218c60752068ebee4b49ab1
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.12"
+    version: "1.1.15"
   vector_math:
     dependency: transitive
     description:
