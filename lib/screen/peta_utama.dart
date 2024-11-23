@@ -106,6 +106,10 @@ class PetaUtama extends HookWidget implements OnPointAnnotationClickListener {
     petaMapbox?.easeTo(options, animasi);
   }
 
+  void _onCameraChangeListener(CameraChangedEventData data) {
+    rog.d('kamera: ${data.cameraState.zoom}');
+  }
+
   // MARK: Kitar hayat luaran ⭕️
 
   @override
@@ -170,6 +174,7 @@ class PetaUtama extends HookWidget implements OnPointAnnotationClickListener {
         MapWidget(
           cameraOptions: kamera,
           onMapCreated: onMapCreated,
+          onCameraChangeListener: _onCameraChangeListener,
         ),
         Positioned(
           right: 15,
