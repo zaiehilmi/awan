@@ -42,7 +42,8 @@ Future<void> apiGtfsStatik(
 
     final response = await dio.head(laluanApi);
     final etagBaru = response.headers.value('etag').toString();
-    final kemaskiniTersedia = Oren().get(KunciOren.etag) != etagBaru;
+    final kemaskiniTersedia =
+        Oren().get(KunciOren.etagPerantaraMRT) != etagBaru;
 
     rog.d(response.requestOptions.uri);
 
@@ -77,7 +78,7 @@ Future<void> apiGtfsStatik(
 }
 
 Future<void> _muatTurunBaharu({required String etag}) async {
-  Oren().set(KunciOren.etag, etag);
+  Oren().set(KunciOren.etagPerantaraMRT, etag);
   lokalState.memuatkanDb(kemajuan: 0.3);
 
   await _prosesData<Agensi>(FailTxt.agensi, addSemuaAgensiDao);
@@ -116,7 +117,7 @@ Future<void> _prosesData<T>(
 }
 
 Future<void> _bilaKemaskiniTersedia({required String etag}) async {
-  Oren().set(KunciOren.etag, etag);
+  Oren().set(KunciOren.etagPerantaraMRT, etag);
 
   basState.senaraiLaluan = [];
   basState.setState();

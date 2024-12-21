@@ -5,7 +5,8 @@ import '../util/roggle.dart';
 enum JenisDataOren { string, int, double, boolean, list, map }
 
 enum KunciOren {
-  etag(JenisDataOren.string),
+  etagRapidKL(JenisDataOren.string),
+  etagPerantaraMRT(JenisDataOren.string),
   penanda(JenisDataOren.list);
 
   final JenisDataOren jenisData;
