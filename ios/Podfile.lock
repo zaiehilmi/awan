@@ -2,47 +2,51 @@ PODS:
   - Flutter (1.0.0)
   - geolocator_apple (1.2.0):
     - Flutter
-  - mapbox_maps_flutter (2.5.0):
+    - FlutterMacOS
+  - mapbox_maps_flutter (2.6.2):
     - Flutter
-    - MapboxMaps (~> 11.9.0)
+    - MapboxMaps (= 11.10.2)
     - Turf (= 4.0.0)
-  - MapboxCommon (24.9.0):
+  - MapboxCommon (24.10.1):
     - Turf (= 4.0.0)
-  - MapboxCoreMaps (11.9.0):
-    - MapboxCommon (~> 24.9)
-  - MapboxMaps (11.9.0):
-    - MapboxCommon (= 24.9.0)
-    - MapboxCoreMaps (= 11.9.0)
+  - MapboxCoreMaps (11.10.3):
+    - MapboxCommon (~> 24.10)
+  - MapboxMaps (11.10.2):
+    - MapboxCommon (= 24.10.1)
+    - MapboxCoreMaps (= 11.10.3)
     - Turf (= 4.0.0)
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
   - permission_handler_apple (9.3.0):
     - Flutter
-  - sqlite3 (3.47.2):
-    - sqlite3/common (= 3.47.2)
-  - sqlite3/common (3.47.2)
-  - sqlite3/dbstatvtab (3.47.2):
+  - sqlite3 (3.49.1):
+    - sqlite3/common (= 3.49.1)
+  - sqlite3/common (3.49.1)
+  - sqlite3/dbstatvtab (3.49.1):
     - sqlite3/common
-  - sqlite3/fts5 (3.47.2):
+  - sqlite3/fts5 (3.49.1):
     - sqlite3/common
-  - sqlite3/perf-threadsafe (3.47.2):
+  - sqlite3/math (3.49.1):
     - sqlite3/common
-  - sqlite3/rtree (3.47.2):
+  - sqlite3/perf-threadsafe (3.49.1):
+    - sqlite3/common
+  - sqlite3/rtree (3.49.1):
     - sqlite3/common
   - sqlite3_flutter_libs (0.0.1):
     - Flutter
     - FlutterMacOS
-    - sqlite3 (~> 3.47.2)
+    - sqlite3 (~> 3.49.1)
     - sqlite3/dbstatvtab
     - sqlite3/fts5
+    - sqlite3/math
     - sqlite3/perf-threadsafe
     - sqlite3/rtree
   - Turf (4.0.0)
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
-  - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
+  - geolocator_apple (from `.symlinks/plugins/geolocator_apple/darwin`)
   - mapbox_maps_flutter (from `.symlinks/plugins/mapbox_maps_flutter/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
@@ -60,7 +64,7 @@ EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
   geolocator_apple:
-    :path: ".symlinks/plugins/geolocator_apple/ios"
+    :path: ".symlinks/plugins/geolocator_apple/darwin"
   mapbox_maps_flutter:
     :path: ".symlinks/plugins/mapbox_maps_flutter/ios"
   path_provider_foundation:
@@ -72,17 +76,17 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  geolocator_apple: 9bcea1918ff7f0062d98345d238ae12718acfbc1
-  mapbox_maps_flutter: d51b6d48ba9d8231a77269f1743ec175099d7b15
-  MapboxCommon: 678bfc4b477a804244fd7323c79cc7f2402f844e
-  MapboxCoreMaps: 5cd77c7251dea10903135e8427c788212bd26346
-  MapboxMaps: 2ce57c4ec89d8f05eacfebdd39b01216e0c06168
-  path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
-  permission_handler_apple: 9878588469a2b0d0fc1e048d9f43605f92e6cec2
-  sqlite3: 7559e33dae4c78538df563795af3a86fc887ee71
-  sqlite3_flutter_libs: 58ae36c0dd086395d066b4fe4de9cdca83e717b3
+  geolocator_apple: ab36aa0e8b7d7a2d7639b3b4e48308394e8cef5e
+  mapbox_maps_flutter: 57688d8a25db4c69720b08ff3ec1b19dd3d29df2
+  MapboxCommon: e3352598343249fd87588e351cb521c23dd50f7b
+  MapboxCoreMaps: 4e773fdeaa260fa129c27b6d6ceecece625590e2
+  MapboxMaps: b43d56f6aa1023950067c21eeddebdd299546b1e
+  path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
+  permission_handler_apple: 4ed2196e43d0651e8ff7ca3483a069d469701f2d
+  sqlite3: fc1400008a9b3525f5914ed715a5d1af0b8f4983
+  sqlite3_flutter_libs: f6acaa2172e6bb3e2e70c771661905080e8ebcf2
   Turf: c9eb11a65d96af58cac523460fd40fec5061b081
 
-PODFILE CHECKSUM: 7d8f5e7f5a624f40f8562dbdc5b10838df826ae6
+PODFILE CHECKSUM: 7d7c28292be8be2f2242417659e80255028e9f70
 
 COCOAPODS: 1.16.2

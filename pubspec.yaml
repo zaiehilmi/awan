@@ -13,37 +13,37 @@ dependencies:
   flutter_hooks: ^0.20.5
   forui: ^0.7.0
   gap: ^3.0.1
-  go_router: ^14.2.7
-  timelines_plus: ^1.0.3
+  go_router: ^14.8.1
+  timelines_plus: ^1.0.6
 
   # fungsi umum
-  archive: ^3.4.10
-  collection: ^1.18.0
-  crypto: ^3.0.3
-  csv: 6.0.0
-  dio: ^5.4.0
+  archive: ^4.0.4
+  collection: ^1.19.1
+  crypto: ^3.0.6
+  csv: ^6.0.0
+  dio: ^5.8.0+1
   june: ^1.0.0+1
   intl:
   path_provider: ^2.1.4
   roggle: ^0.4.2+1  # logging
-  flutter_dotenv: ^5.1.0
-  permission_handler: ^11.3.1
+  flutter_dotenv: ^5.2.1
+  permission_handler: ^11.4.0
   geolocator: ^13.0.1
 
   # database
-  drift: ^2.20.0
-  drift_flutter: ^0.1.0
+  drift: ^2.26.0
+  drift_flutter: ^0.2.4
   orange: ^1.2.10
 
   # peta
-  mapbox_maps_flutter: ^2.4.0
+  mapbox_maps_flutter: ^2.6.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^4.0.0
-  drift_dev: ^2.20.0
-  build_runner: ^2.4.12
+  flutter_lints: ^5.0.0
+  drift_dev: ^2.26.0
+  build_runner: ^2.4.15
 
 flutter:
   uses-material-design: true

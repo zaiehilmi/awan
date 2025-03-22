@@ -9,7 +9,7 @@ List<ArchiveFile> bukaZip(JenisPerkhidmatan perkhidmatan) {
       : '${Tetapan.filePath}/out/${perkhidmatan.nama}.zip';
 
   final inputStream = InputFileStream(kedudukanFail);
-  final arkib = ZipDecoder().decodeBuffer(inputStream);
+  final arkib = ZipDecoder().decodeStream(inputStream);
 
   return arkib.files;
 }
