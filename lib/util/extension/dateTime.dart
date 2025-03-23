@@ -8,7 +8,7 @@ extension FormatMasa on DateTime {
   bool get iaSelepasSekarang {
     final sekarang = DateTime.now();
 
-    final masaKetibaanSahaja = DateTime(2000, 1, 1, hour, minute, second);
+    final masaKetibaanSahaja = DateTime(2_000, 1, 1, hour, minute, second);
     final masaSekarangSahaja = DateTime(
       2000,
       1,
@@ -25,9 +25,9 @@ extension FormatMasa on DateTime {
   Duration get perbezaanMasa {
     final sekarang = DateTime.now();
 
-    final masaKetibaanSahaja = DateTime(2000, 1, 1, hour, minute, second);
+    final masaKetibaanSahaja = DateTime(2_000, 1, 1, hour, minute, second);
     final masaSekarangSahaja = DateTime(
-      2000,
+      2_000,
       1,
       1,
       sekarang.hour,
